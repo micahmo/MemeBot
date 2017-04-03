@@ -52,8 +52,9 @@ def pass_update():
     UPDATE_QUEUE.put(request.data)  # pass update to BOT
     return 'OK'
 
-time.sleep(2)
+time.sleep(3)
 BOT.setWebhook(URL + SECRET)
+time.sleep(3)
 
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
