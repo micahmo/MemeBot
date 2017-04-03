@@ -5,8 +5,8 @@ import pprint
 import time
 from random import randint
 
-LOW_MAGIC_NUMBER = 25
-HIGH_MAGIC_NUMBER = 50
+LOW_MAGIC_NUMBER = 10
+HIGH_MAGIC_NUMBER = 25
 
 PORT = int(os.environ.get('PORT', 5000))
 TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
