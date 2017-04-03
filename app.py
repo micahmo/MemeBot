@@ -40,6 +40,8 @@ def handle(msg):
         BOT.sendMessage(chat_id, "Valid")
     elif ("nintendo" in msg["text"].lower() and "switch" in msg["text"].lower()):
         BOT.sendMessage(chat_id, "Valid")
+    elif ("tfw" in msg["text"].lower()):
+        BOT.sendMessage(chat_id, "Valid")
     elif (num == rand_num and rand_num % 2 == 0):
         BOT.sendMessage(chat_id, "Valid")
         num = 0
