@@ -8,6 +8,7 @@ from random import randint
 LOW_MAGIC_NUMBER = 25
 HIGH_MAGIC_NUMBER = 50
 
+TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
 SECRET = "/BOT" + TOKEN
 URL = "https://validBOT.herokuapp.com/"
 
@@ -46,7 +47,7 @@ def handle(msg):
 
 
 
-BOT = telepot.Bot("378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE")
+BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
 BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
