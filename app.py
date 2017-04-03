@@ -30,7 +30,7 @@ def handle(msg):
 
     print("num " + str(num))
     print("rand_num " + str(rand_num))
-    pprint(msg)
+    pprint.pprint(msg)
 
     content_type, chat_type, chat_id = telepot.glance(msg)
 
