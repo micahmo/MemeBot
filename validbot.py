@@ -8,18 +8,19 @@ from random import randint
 LOW_MAGIC_NUMBER = 25
 HIGH_MAGIC_NUMBER = 50
 
+SECRET = "/BOT" + TOKEN
+URL = "https://validBOT.herokuapp.com/"
+
 try:
     from Queue import Queue
 except ImportError:
     from queue import Queue
 
 app = Flask(__name__)
-TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
-SECRET = "/BOT" + TOKEN
-URL = "https://validBOT.herokuapp.com/"
-
-UPDATE_QUEUE = Queue()
-BOT = telepot.Bot(TOKEN)
+@app.route(SECRET, methods=['GET', 'POST'])
+def pass_update():
+    UPDATE_QUEUE.put(request.data)  # pass update to BOT
+    return 'OK'
 
 def handle(msg):
     global num, rand_num
@@ -44,15 +45,13 @@ def handle(msg):
         rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
 
-# BOT = telepot.Bot("378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE")
+
+BOT = telepot.Bot("378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE")
+UPDATE_QUEUE = Queue()
+
 BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
 
-@app.route(SECRET, methods=['GET', 'POST'])
-def pass_update():
-    UPDATE_QUEUE.put(request.data)  # pass update to BOT
-    return 'OK'
-
-BOT.setWebhook(URL + SECRET)
+# BOT.setWebhook(URL + SECRET)
 
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
