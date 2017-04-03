@@ -51,14 +51,13 @@ def handle(msg):
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
-BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
-
 # BOT.setWebhook(URL + SECRET)
 
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
-if __name__ == '__main__':
-    BOT.setWebhook()
-    BOT.setWebhook(URL + SECRET)
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+BOT.setWebhook()
+BOT.setWebhook(URL + SECRET)
+app.run(host='0.0.0.0', port=PORT, debug=True)
+
+BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
