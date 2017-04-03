@@ -52,6 +52,7 @@ def pass_update():
     UPDATE_QUEUE.put(request.data)  # pass update to BOT
     return 'OK'
 
+sleep(2)
 BOT.setWebhook(URL + SECRET)
 
 num = 0
