@@ -57,7 +57,7 @@ UPDATE_QUEUE = Queue()
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
-BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
+BOT.message_loop(handle, source=UPDATE_QUEUE)
 
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
