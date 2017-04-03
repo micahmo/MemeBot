@@ -14,7 +14,7 @@ except ImportError:
     from queue import Queue
 
 app = Flask(__name__)
-TOKEN = os.environ["378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"]
+TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
 SECRET = "/BOT" + TOKEN
 URL = "https://validBOT.herokuapp.com/"
 
