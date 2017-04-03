@@ -58,9 +58,5 @@ rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
 BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
 
-
-time.sleep(5)
-BOT.setWebhook()
-time.sleep(5)
 BOT.setWebhook(URL + SECRET)
 app.run(host='0.0.0.0', port=PORT, debug=True)
