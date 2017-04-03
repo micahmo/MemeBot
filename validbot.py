@@ -56,3 +56,8 @@ BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
 
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
+
+if __name__ == '__main__':
+    bot.setWebhook()
+    bot.setWebhook(URL + SECRET)
+    app.run(host='0.0.0.0', port=PORT, debug=True)
