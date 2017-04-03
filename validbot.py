@@ -58,6 +58,6 @@ num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
 if __name__ == '__main__':
-    bot.setWebhook()
-    bot.setWebhook(URL + SECRET)
+    BOT.setWebhook()
+    BOT.setWebhook(URL + SECRET)
     app.run(host='0.0.0.0', port=PORT, debug=True)
