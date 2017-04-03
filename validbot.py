@@ -8,6 +8,7 @@ from random import randint
 LOW_MAGIC_NUMBER = 25
 HIGH_MAGIC_NUMBER = 50
 
+PORT = int(os.environ.get('PORT', 5000))
 TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
 SECRET = "/BOT" + TOKEN
 URL = "https://validBOT.herokuapp.com/"
