@@ -34,14 +34,15 @@ def handle(msg):
 
     content_type, chat_type, chat_id = telepot.glance(msg)
 
-    if ("valid" == msg["text"].lower()):
-        BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
-    elif ("valid" in msg["text"].lower()):
-        BOT.sendMessage(chat_id, "Valid")
-    elif ("nintendo" in msg["text"].lower() and "switch" in msg["text"].lower()):
-        BOT.sendMessage(chat_id, "Valid")
-    elif ("tfw" in msg["text"].lower()):
-        BOT.sendMessage(chat_id, "Valid")
+    if (num % 2 == 0):
+        if ("valid" == msg["text"].lower()):
+            BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
+        elif ("valid" in msg["text"].lower()):
+            BOT.sendMessage(chat_id, "Valid")
+        elif ("nintendo" in msg["text"].lower() or "switch" in msg["text"].lower()):
+            BOT.sendMessage(chat_id, "Valid")
+        elif ("tfw" in msg["text"].lower()):
+            BOT.sendMessage(chat_id, "Valid")
     elif (num == rand_num and rand_num % 2 == 0):
         BOT.sendMessage(chat_id, "Valid")
         num = 0
