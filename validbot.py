@@ -1,3 +1,5 @@
+import os
+from flask import Flask, request
 import telepot
 import pprint
 import time
@@ -5,6 +7,19 @@ from random import randint
 
 LOW_MAGIC_NUMBER = 25
 HIGH_MAGIC_NUMBER = 50
+
+try:
+    from Queue import Queue
+except ImportError:
+    from queue import Queue
+
+app = Flask(__name__)
+TOKEN = os.environ["378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"]
+SECRET = "/BOT" + TOKEN
+URL = "https://validBOT.herokuapp.com/"
+
+UPDATE_QUEUE = Queue()
+BOT = telepot.Bot(TOKEN)
 
 def handle(msg):
     global num, rand_num
@@ -16,23 +31,28 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
     if ("valid" == msg["text"].lower()):
-        bot.sendPhoto(chat_id, open("image.jpg", "rb"))
+        BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
     elif ("valid" in msg["text"].lower()):
-        bot.sendMessage(chat_id, "Valid")
+        BOT.sendMessage(chat_id, "Valid")
     elif (num == rand_num and rand_num % 2 == 0):
-        bot.sendMessage(chat_id, "Valid")
+        BOT.sendMessage(chat_id, "Valid")
         num = 0
         rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
     elif (num == rand_num and rand_num % 2 == 1):
-        bot.sendPhoto(chat_id, open("image.jpg", "rb"))
+        BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
         num = 0
         rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
 
-bot = telepot.Bot("378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE")
-bot.message_loop(handle)
+# BOT = telepot.Bot("378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE")
+BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
+
+@app.route(SECRET, methods=['GET', 'POST'])
+def pass_update():
+    UPDATE_QUEUE.put(request.data)  # pass update to BOT
+    return 'OK'
+
+BOT.setWebhook(URL + SECRET)
+
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
-
-while 1:
-    time.sleep(10)
