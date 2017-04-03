@@ -62,5 +62,4 @@ BOT.message_loop({"chat": handle}, source=UPDATE_QUEUE)
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
     BOT.setWebhook(URL + SECRET)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+app.run(host='0.0.0.0', port=PORT, debug=True)
