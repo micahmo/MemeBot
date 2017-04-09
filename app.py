@@ -60,7 +60,6 @@ def handle(msg):
         print("Sent because long message from Tim")
 
 
-
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
