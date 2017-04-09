@@ -43,7 +43,7 @@ def handle(msg):
             BOT.sendMessage(chat_id, "Valid")
         elif ("tfw" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-        elif ("tim" in msg["text"].lower()):
+        elif ("tim" in msg["text"].lower() and "time" not in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
     elif (num == rand_num and rand_num % 2 == 0):
         BOT.sendMessage(chat_id, "Valid")
