@@ -37,6 +37,17 @@ def handle(msg):
     if ("valid" == msg["text"].lower()):
         BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
         print("Sent because \"valid\" was exact message of text")
+    elif (num == rand_num):
+        BOT.sendMessage(chat_id, "Valid")
+        print("Sent because we reached the random number " + str(rand_num))
+        num = 0
+        rand_num = randint(LOW_MAGIC_NUMBER, HIGH_MAGIC_NUMBER)
+    elif str(msg["from"]["id"]) == "55712750" and len(msg["text"]) > 100:
+        BOT.sendMessage(chat_id, "Valid")
+        print("Sent because long message from Tim")
+    elif len(msg["text"]) > 200:
+        BOT.sendMessage(chat_id, "Valid")
+        print("Sent because message long af")
     elif (num % 2 == 0):
         if ("valid" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
@@ -50,14 +61,6 @@ def handle(msg):
         elif ("tim" in msg["text"].lower() and "time" not in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
             print("Sent because \"tim\" (but not \"time\") in message text and it's an even interval")
-    if (num == rand_num):
-        BOT.sendMessage(chat_id, "Valid")
-        print("Sent because we reached the random number " + str(rand_num))
-        num = 0
-        rand_num = randint(LOW_MAGIC_NUMBER, HIGH_MAGIC_NUMBER)
-    elif str(msg["from"]["id"]) == "55712750" and len(msg["text"]) > 100:
-        BOT.sendMessage(chat_id, "Valid")
-        print("Sent because long message from Tim")
 
 
 BOT = telepot.Bot(TOKEN)
