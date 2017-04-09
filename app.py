@@ -40,16 +40,16 @@ def handle(msg):
     elif (num % 2 == 0):
         if ("valid" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-            print("Sent because \"valid\" in message text and it's an even intervanl")
+            print("Sent because \"valid\" in message text and it's an even interval")
         elif ("nintendo" in msg["text"].lower() or "switch" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-            print("Sent because \"nintento\" or \"switch\" in message text and it's an even intervanl")
+            print("Sent because \"nintento\" or \"switch\" in message text and it's an even interval")
         elif ("tfw" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-            print("Sent because \"tfw\" in message text and it's an even intervanl")
+            print("Sent because \"tfw\" in message text and it's an even interval")
         elif ("tim" in msg["text"].lower() and "time" not in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-            print("Sent because \"tim\" (but not \"time\") in message text and it's an even intervanl")
+            print("Sent because \"tim\" (but not \"time\") in message text and it's an even interval")
     if (num == rand_num):
         BOT.sendMessage(chat_id, "Valid")
         print("Sent because we reached the random number " + str(rand_num))
