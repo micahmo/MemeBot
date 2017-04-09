@@ -34,9 +34,13 @@ def handle(msg):
 
     content_type, chat_type, chat_id = telepot.glance(msg)
 
-    if (num % 2 == 0):
-        if ("valid" == msg["text"].lower()):
-            BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
+    if ("valid" == msg["text"].lower()):
+        BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
+    elif (num % 2 == 0):
+        if (num == rand_num):
+            BOT.sendMessage(chat_id, "Valid")
+            num = 0
+            rand_num = randint(LOW_MAGIC_NUMBER, HIGH_MAGIC_NUMBER)
         elif ("valid" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
         elif ("nintendo" in msg["text"].lower() or "switch" in msg["text"].lower()):
@@ -45,14 +49,6 @@ def handle(msg):
             BOT.sendMessage(chat_id, "Valid")
         elif ("tim" in msg["text"].lower() and "time" not in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-    elif (num == rand_num and rand_num % 2 == 0):
-        BOT.sendMessage(chat_id, "Valid")
-        num = 0
-        rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
-    elif (num == rand_num and rand_num % 2 == 1):
-        BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
-        num = 0
-        rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
 
 
