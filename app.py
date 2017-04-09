@@ -49,6 +49,9 @@ def handle(msg):
             BOT.sendMessage(chat_id, "Valid")
         elif ("tim" in msg["text"].lower() and "time" not in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
+    else:
+        print("Message from " + str(msg.from.id) + " and text length " + str(len(msg.text)))
+        # 55712750
 
 
 
