@@ -36,22 +36,28 @@ def handle(msg):
 
     if ("valid" == msg["text"].lower()):
         BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
+        print("Sent because \"valid\" was exact message of text")
     elif (num % 2 == 0):
-        if (num == rand_num):
-            BOT.sendMessage(chat_id, "Valid")
-            num = 0
-            rand_num = randint(LOW_MAGIC_NUMBER, HIGH_MAGIC_NUMBER)
         elif ("valid" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
+            print("Sent because \"valid\" in message text and it's an even intervanl")
         elif ("nintendo" in msg["text"].lower() or "switch" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
+            print("Sent because \"nintento\" or \"switch\" in message text and it's an even intervanl")
         elif ("tfw" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
+            print("Sent because \"tfw\" in message text and it's an even intervanl")
         elif ("tim" in msg["text"].lower() and "time" not in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
-    else:
-        print("Message from " + str(msg["from"]["id"]) + " and text length " + str(len(msg["text"])))
-        # 55712750
+            print("Sent because \"tim\" (but not \"time\") in message text and it's an even intervanl")
+    if (num == rand_num):
+        BOT.sendMessage(chat_id, "Valid")
+        print("Sent because we reached the random number " + str(rand_num))
+        num = 0
+        rand_num = randint(LOW_MAGIC_NUMBER, HIGH_MAGIC_NUMBER)
+    elif str(msg["from"]["id"]) == "55712750" and len(msg["text"]) > 100:
+        BOT.sendMessage(chat_id, "Valid")
+        print("Sent because long message from Tim")
 
 
 
