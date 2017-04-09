@@ -38,7 +38,7 @@ def handle(msg):
         BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
         print("Sent because \"valid\" was exact message of text")
     elif (num % 2 == 0):
-        elif ("valid" in msg["text"].lower()):
+        if ("valid" in msg["text"].lower()):
             BOT.sendMessage(chat_id, "Valid")
             print("Sent because \"valid\" in message text and it's an even intervanl")
         elif ("nintendo" in msg["text"].lower() or "switch" in msg["text"].lower()):
