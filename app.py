@@ -35,12 +35,18 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
     # don't let randos use teh Bot
-    if (chat_id != -27946567 and 
-        chat_id != -4506728 and
-        chat_id != -164436920 and
-        chat_id != 76034823):
+    if (chat_id != -27946567 and # Unix
+        chat_id != -4506728 and # labmons
+        chat_id != -164436920 and # BotTests
+        chat_id != 76034823): # me
         BOT.sendMessage(chat_id, "You must receive permission from the developer, @micahmo, to use this bot.")
         print("Sent because INVALID chat")
+        return
+
+    # let Tim send leet haxor messages
+    if chat_id == 76034823 or chat_id == 55712750:
+        BOT.sendMessage(-27946567, msg["text"])
+        print("Sent because of a special DM")
         return
     
     if ("valid" == msg["text"].lower()):
