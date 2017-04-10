@@ -56,7 +56,7 @@ def handle(msg):
                 pass
     
     if (msg["chat"]["type"] == "private"):
-        data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
+        data[chat_id] = str(chat_id) + " is user @" + msg["chat"]["username"]
     elif (msg["chat"]["type"] == "group"):
         data[chat_id] = str(chat_id) + " is group " + msg["chat"]["title"]
 
