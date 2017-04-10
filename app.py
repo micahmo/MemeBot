@@ -88,7 +88,7 @@ def handle(msg):
                 for key, value in data.items():
                     chatz += value + "\n"
 
-                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\n Send a message to one of these chats by typing \"<ID>: <message>\"")
+                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\nSend a message to one of these chats by typing \"<ID>: <message>\"")
         else:
             try:
                 parts = msg["text"].split(":")
