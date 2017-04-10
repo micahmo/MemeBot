@@ -95,8 +95,9 @@ def handle(msg):
                 parts[0] = parts[0].strip()
                 parts[1] = parts[1].strip()
                 BOT.sendMessage(int(parts[0]), parts[1])
-            except:
-                pass
+                BOT.sendMessage(chat_id, "Message sent!")
+            except Exception, e:
+                print("Failed to send message: " + str(e))
 
 
     # let Tim send leet haxor messages
