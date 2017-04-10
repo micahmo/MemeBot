@@ -6,6 +6,8 @@ import time
 from random import randint
 import json
 
+
+# consts
 LOW_MAGIC_NUMBER = 25
 HIGH_MAGIC_NUMBER = 50
 
@@ -20,6 +22,9 @@ TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
 SECRET = "/BOT" + TOKEN
 URL = "https://validBOT.herokuapp.com/"
 
+
+
+# set up Flask
 try:
     from Queue import Queue
 except ImportError:
@@ -31,6 +36,9 @@ def pass_update():
     UPDATE_QUEUE.put(request.data)  # pass update to BOT
     return 'OK'
 
+
+
+# bot logic
 def handle(msg):
     global num, rand_num
     num += 1
@@ -41,6 +49,7 @@ def handle(msg):
     with open('data.json', 'r+') as f:
         data = {}
         try:
+            print(f.read())
             data = json.load(f)
         except:
             pass
@@ -109,16 +118,14 @@ def handle(msg):
             print("Sent because \"tim\" (but not \"time\") in message text and it's an even interval")
 
 
+# set up bot
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
-
-# BOT.setWebhook(URL + SECRET)
 
 num = 0
 rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
 
 BOT.message_loop(handle, source=UPDATE_QUEUE)
-
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
     BOT.setWebhook(URL + SECRET)
