@@ -34,7 +34,9 @@ def pass_update():
 def handle(msg):
     # keep track of whom the message is from
     with open('data.json', 'r+') as f:
-        data = json.load(f)
+        data = {}
+        try:
+            data = json.load(f)
     
         if (msg["chat"]["type"] == "private"):
             data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
