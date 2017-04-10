@@ -37,6 +37,8 @@ def handle(msg):
         data = {}
         try:
             data = json.load(f)
+        except:
+            pass
     
         if (msg["chat"]["type"] == "private"):
             data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
