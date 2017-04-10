@@ -58,7 +58,11 @@ def handle(msg):
         elif (msg["chat"]["type"] == "group"):
             data[chat_id] = str(chat_id) + " is group " + msg["chat"]["title"]
 
+        # re-write the file
+        f.seek(0)
         json.dump(data, f)
+        f.truncate()
+        
 
     print("num " + str(num))
     print("rand_num " + str(rand_num))
@@ -79,6 +83,8 @@ def handle(msg):
         if msg["text"].lower() == "help":
             with open('data.json', 'r+') as f:
                 print(f.read())
+                f.seek(0) # only because of print debug stmt
+
                 data = json.load(f)
                 bot.sendMessage(chat_id, "These are the chats that I know about: \n" + pprint.pformat(data))
 
