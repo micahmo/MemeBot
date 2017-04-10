@@ -1,4 +1,5 @@
 import os
+import os.path
 from flask import Flask, request
 import telepot
 import pprint
@@ -46,24 +47,23 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     
     # keep track of whom the message is from
-    with open('data.json', 'a+') as f:
-        f.seek(0)
+    data = {}
+    if os.path.isfile("data.json"):
+        with open('data.json', 'r') as f: # open for reading if file exists
+            try:
+                data = json.load(f)
+            except:
+                pass
 
-        data = {}
-        try:
-            data = json.load(f)
-        except:
-            pass
-    
-        if (msg["chat"]["type"] == "private"):
-            data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
-        elif (msg["chat"]["type"] == "group"):
-            data[chat_id] = str(chat_id) + " is group " + msg["chat"]["title"]
+        
+    if (msg["chat"]["type"] == "private"):
+        data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
+    elif (msg["chat"]["type"] == "group"):
+        data[chat_id] = str(chat_id) + " is group " + msg["chat"]["title"]
 
-        # re-write the file
-        f.seek(0)
+    # re-write the file
+    with open('data.json', 'w') as f: # create or truncate file for writing
         json.dump(data, f)
-        f.truncate()
         
 
     print("num " + str(num))
@@ -83,7 +83,7 @@ def handle(msg):
 
     if chat_id == MICAHMO_ID:# or chat_id == TIM_ID:
         if msg["text"].lower() == "help":
-            with open('data.json', 'r+') as f:
+            with open('data.json', 'r') as f: # file WILL exist at this point; open for reading
                 data = json.load(f)
                 BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + pprint.pformat(data))
 
