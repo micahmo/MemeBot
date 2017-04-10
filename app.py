@@ -32,6 +32,11 @@ def pass_update():
     return 'OK'
 
 def handle(msg):
+    global num, rand_num
+    num += 1
+    
+    content_type, chat_type, chat_id = telepot.glance(msg)
+    
     # keep track of whom the message is from
     with open('data.json', 'r+') as f:
         data = {}
@@ -47,15 +52,9 @@ def handle(msg):
 
         json.dump(data, f)
 
-
-    global num, rand_num
-    num += 1
-
     print("num " + str(num))
     print("rand_num " + str(rand_num))
     pprint.pprint(msg)
-
-    content_type, chat_type, chat_id = telepot.glance(msg)
 
     # don't let randos use teh Bot
     if (chat_id != UNIX_ID and
