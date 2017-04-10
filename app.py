@@ -34,6 +34,12 @@ def handle(msg):
 
     content_type, chat_type, chat_id = telepot.glance(msg)
 
+    # don't let randos use teh Bot
+    if (chat_id == -27946567):
+        BOT.sendMessage(chat_id, "You must receive permission from the developer, @micahmo, to use this bot.")
+        print("Sent because INVALID chat")
+        return
+    
     if ("valid" == msg["text"].lower()):
         BOT.sendPhoto(chat_id, open("image.jpg", "rb"))
         print("Sent because \"valid\" was exact message of text")
