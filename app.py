@@ -33,7 +33,15 @@ def pass_update():
 
 def handle(msg):
     # keep track of whom the message is from
+    with open('data.json', 'r+') as f:
+        data = json.load(f)
     
+        if (msg["chat"]["type"] == "private"):
+            data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
+        elif (msg["chat"]["type"] == "group"):
+            data[chat_id] = str(chat_id) + " is group " + msg["chat"]["title"]
+
+        json.dump(data, f)
 
 
     global num, rand_num
@@ -56,9 +64,11 @@ def handle(msg):
         return
 
 
-    # if chat_id == TIM_ID or chat_id == MICAHMO_ID:
-        # if msg["text"].lower() == "help":
-            # bot.sendMessage(chat_id, "These are the chats that I know about: " )
+    if chat_id == MICAHMO_ID:# or chat_id == MICAHMO_ID:
+        if msg["text"].lower() == "help":
+            with open('data.json', 'r+') as f:
+                data = json.load(f)
+                bot.sendMessage(chat_id, "These are the chats that I know about: \n" + data)
 
 
     # let Tim send leet haxor messages
