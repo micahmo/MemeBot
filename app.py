@@ -94,6 +94,7 @@ def handle(msg):
                 parts = msg["txt"].split(":")
                 parts[0] = parts[0].strip()
                 parts[1] = parts[1].strip()
+                print("Sending message \"" + parts[1] + "\" to chat " + str(int(parts[0])))
                 BOT.sendMessage(int(parts[0]), parts[1])
                 BOT.sendMessage(chat_id, "Message sent!")
             except Exception, e:
