@@ -49,7 +49,6 @@ def handle(msg):
     with open('data.json', 'r+') as f:
         data = {}
         try:
-            print(f.read())
             data = json.load(f)
         except:
             pass
@@ -79,6 +78,7 @@ def handle(msg):
     if chat_id == MICAHMO_ID:# or chat_id == MICAHMO_ID:
         if msg["text"].lower() == "help":
             with open('data.json', 'r+') as f:
+                print(f.read())
                 data = json.load(f)
                 bot.sendMessage(chat_id, "These are the chats that I know about: \n" + pprint.pformat(data))
 
