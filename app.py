@@ -41,6 +41,8 @@ def pass_update():
 
 # bot logic
 def handle(msg):
+    print("I'm starting and the file is \n\n" + f.read())
+
     global num, rand_num
     num += 1
 
@@ -141,6 +143,3 @@ if (URL + SECRET) != BOT.getWebhookInfo()['url']:
 
 if (__name__ == "__main__"):
     app.run(host='0.0.0.0', port=PORT, debug=True)
-    
-    with open('data.json', 'r') as f: # file WILL exist at this point; open for reading
-        print("I'm starting and the file is \n\n" + f.read())
