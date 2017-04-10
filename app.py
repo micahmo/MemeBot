@@ -89,7 +89,7 @@ def handle(msg):
                 for key, value in data.items():
                     chatz += value + "\n"
 
-                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz)
+                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\n\n Send a message to one of these chats by typing the \"<ID>: <message>\"")
 
 
     # let Tim send leet haxor messages
