@@ -34,7 +34,7 @@ def pass_update():
 def handle(msg):
     global num, rand_num
     num += 1
-    
+
     content_type, chat_type, chat_id = telepot.glance(msg)
     
     # keep track of whom the message is from
@@ -71,7 +71,7 @@ def handle(msg):
         if msg["text"].lower() == "help":
             with open('data.json', 'r+') as f:
                 data = json.load(f)
-                bot.sendMessage(chat_id, "These are the chats that I know about: \n" + data)
+                bot.sendMessage(chat_id, "These are the chats that I know about: \n" + pprint.pformat(data))
 
 
     # let Tim send leet haxor messages
