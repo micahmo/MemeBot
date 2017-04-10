@@ -89,7 +89,7 @@ def handle(msg):
                 for key, value in data.items():
                     chatz += value + "\n"
 
-                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\n\n Send a message to one of these chats by typing the \"<ID>: <message>\"")
+                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\n Send a message to one of these chats by typing \"<ID>: <message>\"")
 
 
     # let Tim send leet haxor messages
@@ -141,3 +141,6 @@ if (URL + SECRET) != BOT.getWebhookInfo()['url']:
 
 if (__name__ == "__main__"):
     app.run(host='0.0.0.0', port=PORT, debug=True)
+    
+    with open('data.json', 'r') as f: # file WILL exist at this point; open for reading
+        print("I'm starting and the file is \n\n" + f.read())
