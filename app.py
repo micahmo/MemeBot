@@ -91,7 +91,7 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\n Send a message to one of these chats by typing \"<ID>: <message>\"")
         else:
             try:
-                parts = msg["txt"].split(":")
+                parts = msg["text"].split(":")
                 parts[0] = parts[0].strip()
                 parts[1] = parts[1].strip()
                 print("Sending message \"" + parts[1] + "\" to chat " + str(int(parts[0])))
