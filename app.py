@@ -46,7 +46,9 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     
     # keep track of whom the message is from
-    with open('data.json', 'r+') as f:
+    with open('data.json', 'a+') as f:
+        f.seek(0)
+
         data = {}
         try:
             data = json.load(f)
