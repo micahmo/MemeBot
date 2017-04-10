@@ -86,7 +86,7 @@ def handle(msg):
                 f.seek(0) # only because of print debug stmt
 
                 data = json.load(f)
-                bot.sendMessage(chat_id, "These are the chats that I know about: \n" + pprint.pformat(data))
+                BOT.sendMessage(chat_id, "These are the chats that I know about: \n" + pprint.pformat(data))
 
 
     # let Tim send leet haxor messages
