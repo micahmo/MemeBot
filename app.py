@@ -54,9 +54,6 @@ def handle(msg):
                 data = json.load(f)
             except:
                 pass
-    else:
-        print("File doesn't exist. RIP")
-    
     
     if (msg["chat"]["type"] == "private"):
         data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
@@ -92,6 +89,14 @@ def handle(msg):
                     chatz += value + "\n"
 
                 BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz + "\n Send a message to one of these chats by typing \"<ID>: <message>\"")
+        else:
+            try:
+                parts = msg["txt"].split(":")
+                parts[0] = parts[0].strip()
+                parts[1] = parts[1].strip()
+                BOT.sendMessage(int(parts[0]), parts[1])
+            except:
+                pass
 
 
     # let Tim send leet haxor messages
