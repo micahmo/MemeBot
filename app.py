@@ -62,7 +62,7 @@ def handle(msg):
 
 
     # let Tim send leet haxor messages
-    if chat_id == 76034823 and "valid" == msg["text"].lower():
+    if chat_id == TIM_ID and "valid" == msg["text"].lower():
         BOT.sendMessage(-27946567, msg["text"])
         print("Sent because of DM from Tim")
         return
