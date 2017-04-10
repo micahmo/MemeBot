@@ -35,7 +35,7 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
     # don't let randos use teh Bot
-    if (chat_id != -27946567 and chat_id != -4506728 and chat_id != -164436920):
+    if (chat_id != -27946567 and chat_id != -4506728 and chat_id != -164436920 and chat_id != 76034823):
         BOT.sendMessage(chat_id, "You must receive permission from the developer, @micahmo, to use this bot.")
         print("Sent because INVALID chat")
         return
