@@ -99,12 +99,6 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Message sent!")
             except Exception, e:
                 print("Failed to send message: " + str(e))
-
-
-    # let Tim send leet haxor messages
-    if chat_id == TIM_ID and "valid" == msg["text"].lower():
-        BOT.sendMessage(-27946567, msg["text"])
-        print("Sent because of DM from Tim")
         return
     
     if ("valid" == msg["text"].lower()):
