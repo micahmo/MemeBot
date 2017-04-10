@@ -38,7 +38,8 @@ def handle(msg):
     if (chat_id != -27946567 and # Unix
         chat_id != -4506728 and # labmons
         chat_id != -164436920 and # BotTests
-        chat_id != 76034823): # me
+        chat_id != 76034823 and
+        chat_id != 55712750): # me
         BOT.sendMessage(chat_id, "You must receive permission from the developer, @micahmo, to use this bot.")
         print("Sent because INVALID chat")
         return
