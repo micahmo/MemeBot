@@ -80,7 +80,7 @@ def handle(msg):
         return
 
 
-    if chat_id == MICAHMO_ID:# or chat_id == TIM_ID:
+    if chat_id == MICAHMO_ID or chat_id == TIM_ID:
         if msg["text"].lower() == "help":
             with open('data.json', 'r') as f: # file WILL exist at this point; open for reading
                 data = json.load(f)
