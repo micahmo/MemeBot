@@ -85,7 +85,11 @@ def handle(msg):
         if msg["text"].lower() == "help":
             with open('data.json', 'r') as f: # file WILL exist at this point; open for reading
                 data = json.load(f)
-                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + pprint.pformat(data))
+                chatz = ""
+                for key, value in data.items():
+                    chatz += value + "\n"
+
+                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + chatz)
 
 
     # let Tim send leet haxor messages
