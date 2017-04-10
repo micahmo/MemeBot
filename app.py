@@ -4,9 +4,16 @@ import telepot
 import pprint
 import time
 from random import randint
+import json
 
 LOW_MAGIC_NUMBER = 25
 HIGH_MAGIC_NUMBER = 50
+
+UNIX_ID = -27946567
+LABMONS_ID = -4506728
+BOTTESTS_ID = -164436920
+TIM_ID = 76034823
+MICAHMO_ID = 55712750
 
 PORT = int(os.environ.get('PORT', 5000))
 TOKEN = "378332395:AAG1Brzgor5YKYAUuqtek4Tknv1xasbsJXE"
@@ -25,6 +32,10 @@ def pass_update():
     return 'OK'
 
 def handle(msg):
+    # keep track of whom the message is from
+    
+
+
     global num, rand_num
     num += 1
 
@@ -35,14 +46,20 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
     # don't let randos use teh Bot
-    if (chat_id != -27946567 and # Unix
-        chat_id != -4506728 and # labmons
-        chat_id != -164436920 and # BotTests
-        chat_id != 76034823 and
-        chat_id != 55712750): # me
+    if (chat_id != UNIX_ID and
+        chat_id != LABMONS_ID and
+        chat_id != BOTTESTS_ID and
+        chat_id != TIM_ID and
+        chat_id != MICAHMO_ID): # me
         BOT.sendMessage(chat_id, "You must receive permission from the developer, @micahmo, to use this bot.")
         print("Sent because INVALID chat")
         return
+
+
+    # if chat_id == TIM_ID or chat_id == MICAHMO_ID:
+        # if msg["text"].lower() == "help":
+            # bot.sendMessage(chat_id, "These are the chats that I know about: " )
+
 
     # let Tim send leet haxor messages
     if chat_id == 76034823 and "valid" == msg["text"].lower():
