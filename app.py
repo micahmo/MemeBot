@@ -41,9 +41,6 @@ def pass_update():
 
 # bot logic
 def handle(msg):
-    with open('data.json', 'r') as f: # file WILL exist at this point; open for reading
-        print("I'm starting and the file is \n\n" + f.read())
-
     global num, rand_num
     num += 1
 
@@ -57,8 +54,10 @@ def handle(msg):
                 data = json.load(f)
             except:
                 pass
-
-        
+    else:
+        print("File doesn't exist. RIP")
+    
+    
     if (msg["chat"]["type"] == "private"):
         data[chat_id] = str(chat_id) + " is @" + msg["chat"]["username"]
     elif (msg["chat"]["type"] == "group"):
