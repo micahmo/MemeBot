@@ -82,11 +82,8 @@ def handle(msg):
     if chat_id == MICAHMO_ID:# or chat_id == MICAHMO_ID:
         if msg["text"].lower() == "help":
             with open('data.json', 'r+') as f:
-                print(f.read())
-                f.seek(0) # only because of print debug stmt
-
                 data = json.load(f)
-                BOT.sendMessage(chat_id, "These are the chats that I know about: \n" + pprint.pformat(data))
+                BOT.sendMessage(chat_id, "These are the chats that I know about: \n\n" + pprint.pformat(data))
 
 
     # let Tim send leet haxor messages
