@@ -46,14 +46,14 @@ def handle(msg):
     print("Message status before: ", end="")
     pprint.pprint(message_status)
 
-    if msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
+    if "text" in msg and msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
         BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
-    elif msg["text"].lower() == "/addmeme":
+    elif "text" in msg and msg["text"].lower() == "/addmeme":
         BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
         message_status[chat_id] = MessageStatus.WaitingForMeme
 
-    elif message_status[chat_id] == MessageStatus.WaitingForMeme and msg["photo"] != None: # and message is picture...?
+    elif "photo" in msg and chat_id in message_status and message_status[chat_id] == MessageStatus.WaitingForMeme: # and message is picture...?
         BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
         message_status[chat_id] = MessageStatus.WaitingForMemeName
     
