@@ -28,8 +28,9 @@ def pass_update():
     UPDATE_QUEUE.put(request.data)  # pass update to BOT
     return 'OK'
 
-# private field
+# private fields
 message_status = {}
+memes_in_progress = {}
 
 # message status "enum"
 class MessageStatus:
@@ -59,6 +60,9 @@ def handle(msg):
     
     elif chat_id in message_status and message_status[chat_id] == MessageStatus.WaitingForMeme:
         BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
+
+    elif chat_id in message_status and message_status[chat_id] == MessageStatus.WaitingForMemeName and "text" in msg:
+        BOT.sendMessage(chat_id, "Alright, I'll call it {}. Now you can send it to other people by @ing me!".format(msg["text"].replace(" ", "_")))
 
     else:
         BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
