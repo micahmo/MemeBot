@@ -54,8 +54,8 @@ def handle(msg):
 
     pprint.pprint(msg)
 
-    if msg["text"].lower() == "help":
-        BOT.sendMessage(chat_id, "suh dude")
+    if msg["text"].lower() == "/start":
+        BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!")
 
 
 # set up bot
