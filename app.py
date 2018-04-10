@@ -50,6 +50,9 @@ def handle(msg):
     elif msg["text"].lower() == "/addmeme":
         BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
         message_status[chat_id] = MessageStatus.WaitingForMeme
+    
+    else:
+        BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
     
 
