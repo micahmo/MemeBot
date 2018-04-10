@@ -57,7 +57,7 @@ def handle(msg):
         BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
         message_status[chat_id] = MessageStatus.WaitingForMemeName
     
-    elif message_status[chat_id] == MessageStatus.WaitingForMeme:
+    elif chat_id in message_status and message_status[chat_id] == MessageStatus.WaitingForMeme:
         BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
 
     else:
