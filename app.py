@@ -53,10 +53,13 @@ def handle(msg):
         BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
         message_status[chat_id] = MessageStatus.WaitingForMeme
 
-    elif message_status[chat_id] == MessageStatus.WaitingForMeme: # and message is picture...?
+    elif message_status[chat_id] == MessageStatus.WaitingForMeme and msg["photo"] != None: # and message is picture...?
         BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
         message_status[chat_id] = MessageStatus.WaitingForMemeName
     
+    elif message_status[chat_id] == MessageStatus.WaitingForMeme:
+        BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
+
     else:
         BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
