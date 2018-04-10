@@ -62,9 +62,6 @@ def handle(msg):
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
-num = 0
-rand_num = randint(LOW_MAGIC_NUMBER,HIGH_MAGIC_NUMBER)
-
 BOT.message_loop(handle, source=UPDATE_QUEUE)
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
