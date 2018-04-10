@@ -28,34 +28,30 @@ def pass_update():
     UPDATE_QUEUE.put(request.data)  # pass update to BOT
     return 'OK'
 
+# private field
+message_status = {}
+
+# message status "enum"
+class MessageStatus:
+    None = 0
+    WaitingForMeme = 1
 
 
 # bot logic
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     
-    # keep track of whom the message is from
-    data = {}
-    if os.path.isfile("data.json"):
-        with open('data.json', 'r') as f: # open for reading if file exists
-            try:
-                data = json.load(f)
-            except:
-                pass
-    
-    if (msg["chat"]["type"] == "private"):
-        data[chat_id] = str(chat_id) + " is user @" + msg["chat"]["username"]
-    elif (msg["chat"]["type"] == "group"):
-        data[chat_id] = str(chat_id) + " is group " + msg["chat"]["title"]
-
-    # re-write the file
-    with open('data.json', 'w') as f: # create or truncate file for writing
-        json.dump(data, f)
-
     pprint.pprint(msg)
+    pprint(message_status)
 
     if msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
         BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
+
+    elif msg["text"].lower() == "/addmeme":
+        BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
+        message_status[chat_id] = MessageStatus.WaitingForMeme
+
+    
 
 
 # set up bot
