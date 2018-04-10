@@ -42,7 +42,8 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     
     pprint.pprint(msg)
-    pprint.pprint("Message statuses before receiving message: " + message_status)
+    print("Message status before: ", end="")
+    pprint.pprint(message_status)
 
     if msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
         BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
@@ -54,7 +55,8 @@ def handle(msg):
     else:
         BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
-    pprint.pprint("Message statuses after receiving message: " + message_status)   
+    print("Message status after :", end="")
+    pprint.pprint(message_status)   
 
 
 # set up bot
