@@ -43,9 +43,8 @@ class MessageStatus:
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     
+    print(content_type)
     pprint.pprint(msg)
-    print("Message status before: ", end="")
-    pprint.pprint(message_status)
 
     if "text" in msg and msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
         BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
@@ -62,12 +61,11 @@ def handle(msg):
         BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
 
     elif chat_id in message_status and message_status[chat_id] == MessageStatus.WaitingForMemeName and "text" in msg:
-        BOT.sendMessage(chat_id, "Alright, I'll call it {}. Now you can send it to other people by @ing me!".format(msg["text"].replace(" ", "_")))
+        BOT.sendMessage(chat_id, "Alright, I'll call it {}. Now you can send it to other people by using @meme42bot!".format(msg["text"].replace(" ", "_")))
 
     else:
         BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
-    print("Message status after: ", end="")
     pprint.pprint(message_status)   
 
 
