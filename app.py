@@ -33,7 +33,7 @@ message_status = {}
 
 # message status "enum"
 class MessageStatus:
-    None = 0
+    Unknown = 0
     WaitingForMeme = 1
 
 
