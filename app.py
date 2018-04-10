@@ -55,7 +55,7 @@ def handle(msg):
     pprint.pprint(msg)
 
     if msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
-        BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["username"]))
+        BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
 
 # set up bot
