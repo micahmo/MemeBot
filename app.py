@@ -35,6 +35,7 @@ message_status = {}
 class MessageStatus:
     Unknown = 0
     WaitingForMeme = 1
+    WaitingForMemeName = 2
 
 
 # bot logic
@@ -51,11 +52,15 @@ def handle(msg):
     elif msg["text"].lower() == "/addmeme":
         BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
         message_status[chat_id] = MessageStatus.WaitingForMeme
+
+    elif message_status[chat_id] == MessageStatus.WaitingForMeme: # and message is picture...?
+        BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
+        message_status[chat_id] = MessageStatus.WaitingForMemeName
     
     else:
         BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
-    print("Message status after :", end="")
+    print("Message status after: ", end="")
     pprint.pprint(message_status)   
 
 
