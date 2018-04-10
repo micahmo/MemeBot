@@ -54,7 +54,7 @@ def handle(msg):
     else:
         BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
-     pprint.pprint("Message statuses after receiving message: " + message_status)   
+    pprint.pprint("Message statuses after receiving message: " + message_status)   
 
 
 # set up bot
