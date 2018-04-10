@@ -65,6 +65,7 @@ UPDATE_QUEUE = Queue()
 BOT.message_loop(handle, source=UPDATE_QUEUE)
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
+    BOT.setWebhook() # unset if was set previously
     BOT.setWebhook(URL + SECRET)
 
 if (__name__ == "__main__"):
