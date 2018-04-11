@@ -53,9 +53,12 @@ def handle(msg):
         BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
         message_status[chat_id] = MessageStatus.WaitingForMeme
 
-    elif "text" in msg and msg["text"].lower().startswith("/cancel"):
+    elif "text" in msg and msg["text"].lower().startswith("/cancel") and chat_id in message_status and message_status[chat_id] != MessageStatus.Unknown:
         BOT.sendMessage(chat_id, "Alright, consider it cancelled!")
-        message_status[chat_id] = MessageStatus.Unknown]
+        message_status[chat_id] = MessageStatus.Unknown
+
+    elif "text" in msg and msg["text"].lower().startswith("/cancel") and chat_id in message_status and message_status[chat_id] == MessageStatus.Unknown:
+        BOT.sendMessage(chat_id, "Well, there's nothing to cancel, but ok. :)")
 
     elif "photo" in msg and chat_id in message_status and message_status[chat_id] == MessageStatus.WaitingForMeme: # and message is picture...?
         BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
