@@ -49,7 +49,7 @@ def handle(msg):
     if "text" in msg and msg["chat"]["type"] == "private" and msg["text"].lower() == "/start": #if we get a private message with "/start"
         BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
-    elif "text" in msg and msg["text"].lower() == "/addmeme":
+    elif "text" in msg and msg["text"].lower().startswith("/addmeme"):
         BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
         message_status[chat_id] = MessageStatus.WaitingForMeme
 
