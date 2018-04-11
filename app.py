@@ -48,7 +48,7 @@ def handle(msg):
 
     if msg["chat"]["type"] == "private":
     #{
-        if "text" in msg and msg["text"].lower() == "/start" or msg["text"].lower() == "/help":
+        if "text" in msg and (msg["text"].lower() == "/start" or msg["text"].lower() == "/help"):
             BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
         elif "text" in msg and msg["text"].lower().startswith("/addmeme"):
