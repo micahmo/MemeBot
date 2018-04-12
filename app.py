@@ -93,7 +93,7 @@ def upload_file(fileName):
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     
     # get the bucket
-    bucket = conn.create_bucket(S3_BUCKET, location=boto.s3.connection.Location.DEFAULT)
+    bucket = conn.get_bucket(S3_BUCKET)
     
     # create the file
     k = Key(bucket)
