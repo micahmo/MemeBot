@@ -92,7 +92,7 @@ def upload_file(fileName):
 
 
     # get the connection
-    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.['REGION_HOST'])
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
     
     # get the bucket
     bucket = conn.get_bucket(S3_BUCKET)
