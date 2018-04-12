@@ -57,6 +57,7 @@ def handle(msg):
 
         elif "text" in msg and msg["text"].lower().startswith("/addmeme"):
             BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
+            upload_file('app.py')
             message_status[chat_id] = MessageStatus.WaitingForMeme
 
         elif "text" in msg and msg["text"].lower().startswith("/cancel") and chat_id in message_status and message_status[chat_id] != MessageStatus.Unknown:
@@ -82,10 +83,24 @@ def handle(msg):
 
     pprint.pprint(message_status)   
 
-def upload_file(file):
+def upload_file(fileName):
+    # get our env vars
     S3_BUCKET = os.environ.get('S3_BUCKET')
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+    # get the connection
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+    
+    # get the bucket
+    bucket = conn.create_bucket(bucket_name, location=boto.s3.connection.Location.DEFAULT)
+    
+    # create the file
+    k = Key(bucket)
+    k.key = 'app.py'
+    k.set_contents_from_filename(fileName)
+
+
 
 
 # set up bot
