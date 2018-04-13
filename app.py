@@ -120,7 +120,7 @@ def upload_file(fileName):
     
     # create the file
     k = Key(bucket)
-    k.key = 'app.py'
+    k.key = fileName
     k.set_contents_from_filename(fileName)
 
 
