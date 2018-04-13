@@ -85,7 +85,7 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!")
                 message_status[chat_id] = MessageStatus.Unknown
 
-                
+
 
             else:
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
@@ -98,7 +98,7 @@ def handle(msg):
 
                 # save the picture with the id of this chatter
                 pictureName = str(chat_id) + '.png'
-                bot.download_file(msg['photo'][-1]['file_id'], pictureName)
+                BOT.download_file(msg['photo'][-1]['file_id'], pictureName)
                 upload_file(pictureName)
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't sent a picture...
