@@ -103,7 +103,7 @@ def handle(msg):
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
                 BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!".format(msg["text"]))
-                message_status[chat_id] = MessageStatus.Unknown
+                message_status[chat_id] = MessageStatus.PendingApproval
 
                 picturePath = chat_id + ".png"
                 open_file(picturePath)
