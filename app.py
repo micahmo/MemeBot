@@ -213,10 +213,13 @@ def open_file(fileName):
     # get the bucket
     bucket = conn.get_bucket(S3_BUCKET)
 
-    # get the file
-    k = Key(bucket)
-    k.key = fileName
-    k.get_contents_to_filename(fileName)
+    try:
+        # get the file
+        k = Key(bucket)
+        k.key = fileName
+        k.get_contents_to_filename(fileName)
+    except:
+        open(fileName, 'a').close() #create an empty file if we can't find one on the server
 
 
 # set up bot
