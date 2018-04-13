@@ -35,6 +35,9 @@ def pass_update():
 # private fields
 memes_in_progress = {} #make this local
 
+#some "consts"
+MESSAGE_STATUS_FILENAME = 'message_status.json'
+
 # message status "enum"
 class MessageStatus:
     Unknown = 0
@@ -89,11 +92,15 @@ def handle(msg):
     #}
 
     # write our status to a file
-    with open('message_status.json', 'w') as outfile:
+    with open(MESSAGE_STATUS_FILENAME, 'w') as outfile:
         json.dump(message_status, outfile)
 
+    #write our file to S3
+    upload_file(MESSAGE_STATUS_FILENAME)
 
+    #print our received message, for debugging purposes
     pprint.pprint(message_status)   
+
 
 def upload_file(fileName):
     # get our env vars
