@@ -89,7 +89,7 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
         
         elif content_type == 'photo':
-            elif message_status.get(chat_id) == MessageStatus.WaitingForMeme:
+            if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
                 BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
                 message_status[chat_id] = MessageStatus.WaitingForMemeName
 
