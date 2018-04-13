@@ -69,7 +69,7 @@ def handle(msg):
         if content_type == 'text':
             if chat_id == MICAHMO_ID and msg.get("text").lower().startswith("yes"):
                 # see if the given chat number is pending approval
-                pending_apprval_chat_id = msg.get("text").split(' ')
+                pending_apprval_chat_id = msg.get("text").split(' ')[1]
                 if message_status.get(pending_apprval_chat_id) == MessageStatus.PendingApproval:
                     BOT.sendMessage(MICAHMO_ID, "Alright, it's been accepted.")
                     BOT.sendMessage(pending_apprval_chat_id, "Congratulations, your meme \"{}\" has been approved!")
@@ -77,7 +77,7 @@ def handle(msg):
 
             if chat_id == MICAHMO_ID and msg.get("text").lower().startswith("no"):
                 # see if the given chat number is pending approval
-                pending_apprval_chat_id = msg.get("text").split(' ')
+                pending_apprval_chat_id = msg.get("text").split(' ')[1]
                 if message_status.get(pending_apprval_chat_id) == MessageStatus.PendingApproval:
                     BOT.sendMessage(MICAHMO_ID, "Alright, it's been rejected.")
                     BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
