@@ -142,7 +142,7 @@ def load(file):
 def get_filename_from_file(file):
     if (file == Files.MessageStatus): fileName = MESSAGE_STATUS_FILENAME
     elif (file == Files.MemeData): fileName = "bla"
-    else return None
+    else: return None
 
 def upload_file(fileName):
     # get our env vars
