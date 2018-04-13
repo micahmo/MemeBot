@@ -11,7 +11,7 @@ import boto.s3
 import sys
 from boto.s3.key import Key
 
-MICAHMO_ID = 76034823
+MICAHMO_ID = '76034823'
 
 PORT = int(os.environ.get('PORT', 5000))
 TOKEN = "554574433:AAE6O2v3sm7yEQ9kJYW7GPp-JGnrUSyUMGM"
@@ -63,7 +63,7 @@ def handle(msg):
 
     if msg["chat"]["type"] == "private":
 
-        if message_status.get(chat_id) == MessageStatus.PendingApproval:
+        if chat_id != MICAHMO_ID and message_status.get(chat_id) == MessageStatus.PendingApproval:
             BOT.sendMessage(chat_id, "Hang on, your meme is pending approval. I'll let you know as soon as it's been added!")
 
         if content_type == 'text':
@@ -86,7 +86,7 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
-                BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!")
+                BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!".format(msg["text"]))
                 message_status[chat_id] = MessageStatus.Unknown
 
                 
