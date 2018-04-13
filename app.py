@@ -47,8 +47,8 @@ class MessageStatus:
 
 # bot logic
 def handle(msg):
-    #create some locals
-    message_status = {}
+    # load our message status
+    message_status = load_message_status()
 
     #get our chat data
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -91,6 +91,14 @@ def handle(msg):
             BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
     #}
 
+    # save our message status object
+    save_message_status(message_status)
+
+    #print our received message, for debugging purposes
+    pprint.pprint(message_status)   
+
+
+def save_message_status(message_status):
     # write our status to a file
     with open(MESSAGE_STATUS_FILENAME, 'w') as outfile:
         json.dump(message_status, outfile)
@@ -98,9 +106,23 @@ def handle(msg):
     #write our file to S3
     upload_file(MESSAGE_STATUS_FILENAME)
 
-    #print our received message, for debugging purposes
-    pprint.pprint(message_status)   
+    #and remove our local copy
+    os.remove(MESSAGE_STATUS_FILENAME)
 
+def load_message_status():
+    #first, open our configuration file
+    open_file(MESSAGE_STATUS_FILENAME)
+
+    #now convert the file to an object
+    message_status = {}
+    with open(MESSAGE_STATUS_FILENAME) as json_data:
+        message_status = json.load(json_data)
+
+    # now delete our local file
+    os.remove(MESSAGE_STATUS_FILENAME)
+
+    #now return our new object
+    return message_status
 
 def upload_file(fileName):
     # get our env vars
@@ -123,7 +145,12 @@ def upload_file(fileName):
     k.key = fileName
     k.set_contents_from_filename(fileName)
 
+def open_file(fileName):
+    # get our env vars
+    S3_BUCKET = os.environ.get('S3_BUCKET')
 
+    #down the file and save it locally with the same name
+    s3.Bucket(BUCKET_NAME).download_file(fileName, fileName)
 
 
 # set up bot
