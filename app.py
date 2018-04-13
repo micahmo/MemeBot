@@ -58,39 +58,41 @@ def handle(msg):
     pprint.pprint(msg)
 
     if msg["chat"]["type"] == "private":
-    #{
-        if msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
-            BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
-        elif msg.get("text").lower().startswith("/addmeme"):
-            BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
-            upload_file('app.py')
-            message_status[chat_id] = MessageStatus.WaitingForMeme
+        if content_type == 'text':
+            if msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
+                BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
-        elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) != MessageStatus.Unknown:
-            BOT.sendMessage(chat_id, "Alright, consider it cancelled!")
-            message_status[chat_id] = MessageStatus.Unknown
+            elif msg.get("text").lower().startswith("/addmeme"):
+                BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
+                upload_file('app.py')
+                message_status[chat_id] = MessageStatus.WaitingForMeme
 
-        elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) == MessageStatus.Unknown:
-            BOT.sendMessage(chat_id, "Well, there's nothing to cancel, but ok. :)")
+            elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) != MessageStatus.Unknown:
+                BOT.sendMessage(chat_id, "Alright, consider it cancelled!")
+                message_status[chat_id] = MessageStatus.Unknown
 
-        elif "photo" in msg and message_status.get(chat_id) == MessageStatus.WaitingForMeme: # and message is picture...?
-            BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
-            message_status[chat_id] = MessageStatus.WaitingForMemeName
+            elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) == MessageStatus.Unknown:
+                BOT.sendMessage(chat_id, "Well, there's nothing to cancel, but ok. :)")
+            
+            elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
+                BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
+
+            elif "text" in msg and message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
+                BOT.sendMessage(chat_id, "Alright, I'll call it {}. Now you can send it to other people by using @meme42bot!".format(msg["text"].replace(" ", "_")))
+                message_status[chat_id] = MessageStatus.Unknown
+
+            elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't send text
+                BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
+
+            else:
+                BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
         
-        elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
-            BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
+        elif content_type == 'photo':
+            elif message_status.get(chat_id) == MessageStatus.WaitingForMeme:
+                BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
+                message_status[chat_id] = MessageStatus.WaitingForMemeName
 
-        elif "text" in msg and message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
-            BOT.sendMessage(chat_id, "Alright, I'll call it {}. Now you can send it to other people by using @meme42bot!".format(msg["text"].replace(" ", "_")))
-            message_status[chat_id] = MessageStatus.Unknown
-
-        elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't send text
-            BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
-
-        else:
-            BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
-    #}
 
     # save our message status object
     save_message_status(message_status)
