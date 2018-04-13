@@ -146,11 +146,24 @@ def upload_file(fileName):
     k.set_contents_from_filename(fileName)
 
 def open_file(fileName):
-    # get our env vars
     S3_BUCKET = os.environ.get('S3_BUCKET')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-    #down the file and save it locally with the same name
-    s3.Bucket(BUCKET_NAME).download_file(fileName, fileName)
+    # set up some environment variables that boto will need
+    os.environ['S3_USE_SIGV4'] = 'True'
+    os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
+
+    # get the connection
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
+    
+    # get the bucket
+    bucket = conn.get_bucket(S3_BUCKET)
+
+    # get the file
+    k = Key(bucket)
+    k.key = fileName
+    k.get_contents_to_filename(fileName)
 
 
 # set up bot
