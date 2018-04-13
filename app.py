@@ -44,11 +44,14 @@ class MessageStatus:
     WaitingForMeme = 1
     WaitingForMemeName = 2
 
+class Files:
+    MessageStatus = 0
+    MemeData = 1
 
 # bot logic
 def handle(msg):
     # load our message status
-    message_status = load_message_status()
+    message_status = load(Files.MessageStatus)
 
     #get our chat data
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -79,7 +82,7 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
-                BOT.sendMessage(chat_id, "Alright, I'll call it {}. Now you can send it to other people by using @meme42bot!".format(msg["text"].replace(" ", "_")))
+                BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now you can send it to other people by using @meme42bot!".format(msg["text"]))
                 message_status[chat_id] = MessageStatus.Unknown
 
             else:
@@ -96,37 +99,50 @@ def handle(msg):
 
 
     # save our message status object
-    save_message_status(message_status)
+    save(Files.MessageStatus, message_status)
 
     #print our received message, for debugging purposes
     pprint.pprint(message_status)   
 
 
-def save_message_status(message_status):
+def save(file, object):
+
+    fileName = get_filename_from_file(file)
+    if (fileName == None) return
+
     # write our status to a file
-    with open(MESSAGE_STATUS_FILENAME, 'w') as outfile:
-        json.dump(message_status, outfile)
+    with open(fileName, 'w') as outfile:
+        json.dump(object, outfile)
 
     #write our file to S3
-    upload_file(MESSAGE_STATUS_FILENAME)
+    upload_file(fileName)
 
     #and remove our local copy
-    os.remove(MESSAGE_STATUS_FILENAME)
+    os.remove(fileName)
 
-def load_message_status():
+def load(file):
+
+    fileName = get_filename_from_file(file)
+    if (fileName == None) return
+
     #first, open our configuration file
-    open_file(MESSAGE_STATUS_FILENAME)
+    open_file(fileName)
 
     #now convert the file to an object
-    message_status = {}
-    with open(MESSAGE_STATUS_FILENAME) as json_data:
-        message_status = json.load(json_data)
+    object = {}
+    with open(fileName) as json_data:
+        object = json.load(json_data)
 
     # now delete our local file
-    os.remove(MESSAGE_STATUS_FILENAME)
+    os.remove(MESSAGE_STATUS_FfileNameILENAME)
 
     #now return our new object
-    return message_status
+    return object
+
+def get_filename_from_file(file):
+    if (file == Files.MessageStatus): fileName = MESSAGE_STATUS_FILENAME
+    elif (file == Files.MemeData): fileName = "bla"
+    else return None
 
 def upload_file(fileName):
     # get our env vars
