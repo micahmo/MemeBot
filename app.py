@@ -140,8 +140,8 @@ def load(file):
     return object
 
 def get_filename_from_file(file):
-    if (file == Files.MessageStatus): fileName = MESSAGE_STATUS_FILENAME
-    elif (file == Files.MemeData): fileName = "bla"
+    if (file == Files.MessageStatus): return MESSAGE_STATUS_FILENAME
+    elif (file == Files.MemeData): return "bla"
     else: return None
 
 def upload_file(fileName):
