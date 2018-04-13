@@ -67,6 +67,22 @@ def handle(msg):
             BOT.sendMessage(chat_id, "Hang on, your meme is pending approval. I'll let you know as soon as it's been added!")
 
         if content_type == 'text':
+            if chat_id == MICAHMO_ID and msg.get("text").lower().startswith("yes"):
+                # see if the given chat number is pending approval
+                pending_apprval_chat_id = msg.get("text").split(' ')
+                if message_status.get(pending_apprval_chat_id) == MessageStatus.PendingApproval:
+                    BOT.sendMessage(MICAHMO_ID, "Alright, it's been accepted.")
+                    BOT.sendMessage(pending_apprval_chat_id, "Congratulations, your meme \"{}\" has been approved!")
+                    message_status[pending_apprval_chat_id] = MessageStatus.Unknown
+
+            if chat_id == MICAHMO_ID and msg.get("text").lower().startswith("no"):
+                # see if the given chat number is pending approval
+                pending_apprval_chat_id = msg.get("text").split(' ')
+                if message_status.get(pending_apprval_chat_id) == MessageStatus.PendingApproval:
+                    BOT.sendMessage(MICAHMO_ID, "Alright, it's been rejected.")
+                    BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
+                    message_status[pending_apprval_chat_id] = MessageStatus.Unknown
+
             if msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
