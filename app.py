@@ -52,6 +52,7 @@ def handle(msg):
 
     #get our chat data
     content_type, chat_type, chat_id = telepot.glance(msg)
+    chat_id = str(chat_id) #if it's not already a string...
     
     print(content_type)
     pprint.pprint(msg)
