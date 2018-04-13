@@ -134,7 +134,7 @@ def load(file):
         object = json.load(json_data)
 
     # now delete our local file
-    os.remove(MESSAGE_STATUS_FfileNameILENAME)
+    os.remove(fileName)
 
     #now return our new object
     return object
