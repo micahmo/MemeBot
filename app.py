@@ -43,6 +43,7 @@ class MessageStatus:
     Unknown = 0
     WaitingForMeme = 1
     WaitingForMemeName = 2
+    PendingApproval = 3
 
 class Files:
     MessageStatus = 0
@@ -61,6 +62,9 @@ def handle(msg):
     pprint.pprint(msg)
 
     if msg["chat"]["type"] == "private":
+
+        if message_status.get(chat_id) == MessageStatus.PendingApproval:
+            BOT.sendMessage(chat_id, "Hang on, your meme is pending approval. I'll let you know as soon as it's been added!")
 
         if content_type == 'text':
             if msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
@@ -85,7 +89,8 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!")
                 message_status[chat_id] = MessageStatus.Unknown
 
-
+                
+                BOT.sendMessage(MICAHMO_ID, "{} {} (@{}) is trying to add the following meme... Reply \"yes {}\" or \"no {}\" to approve or disapprove.".format(msg["chat"]["first_name"], msg["chat"]["last_name"]), msg["chat"]["username"]), chat_id, chat_id)
 
             else:
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
