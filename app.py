@@ -33,8 +33,7 @@ def pass_update():
     return 'OK'
 
 # private fields
-message_status = {}
-memes_in_progress = {}
+memes_in_progress = {} #make this local
 
 # message status "enum"
 class MessageStatus:
@@ -45,6 +44,10 @@ class MessageStatus:
 
 # bot logic
 def handle(msg):
+    #create some locals
+    message_status = {}
+
+    #get our chat data
     content_type, chat_type, chat_id = telepot.glance(msg)
     
     print(content_type)
@@ -84,6 +87,11 @@ def handle(msg):
         else:
             BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
     #}
+
+    # write our status to a file
+    with open('message_status.json', 'w') as outfile:
+        json.dump(message_status, outfile)
+
 
     pprint.pprint(message_status)   
 
