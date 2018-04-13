@@ -108,7 +108,7 @@ def handle(msg):
 def save(file, object):
 
     fileName = get_filename_from_file(file)
-    if (fileName == None) return
+    if (fileName == None): return
 
     # write our status to a file
     with open(fileName, 'w') as outfile:
@@ -123,7 +123,7 @@ def save(file, object):
 def load(file):
 
     fileName = get_filename_from_file(file)
-    if (fileName == None) return
+    if (fileName == None): return
 
     #first, open our configuration file
     open_file(fileName)
