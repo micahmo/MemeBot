@@ -105,8 +105,10 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!".format(msg["text"]))
                 message_status[chat_id] = MessageStatus.Unknown
 
-                
-                BOT.sendMessage(MICAHMO_ID, "{} {} (@{}) is trying to add the following meme... Reply \"yes {}\" or \"no {}\" to approve or disapprove.".format(msg["chat"]["first_name"], msg["chat"]["last_name"], msg["chat"]["username"], chat_id, chat_id))
+                picturePath = chat_id + ".png"
+                open_file(picturePath)
+                BOT.sendPhoto(MICAHMO_ID, open(picturePath, 'rb'))
+                BOT.sendMessage(MICAHMO_ID, "{} {} (@{}) is trying to add the above meme... Reply \"yes {}\" or \"no {}\" to approve or disapprove.".format(msg["chat"]["first_name"], msg["chat"]["last_name"], msg["chat"]["username"], chat_id, chat_id))
 
             else:
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
