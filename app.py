@@ -80,13 +80,19 @@ def handle(msg):
                 pending_apprval_chat_id = msg.get("text").split(' ')[1]
                 if message_status.get(pending_apprval_chat_id) == MessageStatus.PendingApproval:
                     BOT.sendMessage(MICAHMO_ID, "Alright, it's been accepted.")
-                    BOT.sendMessage(pending_apprval_chat_id, "Congratulations, your meme \"{}\" has been approved!")
                     message_status[pending_apprval_chat_id] = MessageStatus.Unknown
+
+                    memeName = ""
 
                     # update our meme data
                     for memeName, meme in meme_data.items():
                         if (meme.submitter == pending_apprval_chat_id and meme.status == MemeStatus.PendingApproval):
+                            memeName = meme.name
                             meme.status = MemeStatus.Approved
+
+                    # notify the user!
+                    if (memeName != ""):
+                        BOT.sendMessage(pending_apprval_chat_id, "Congratulations, your meme \"{}\" has been approved!".format(memeName))
 
 
             elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("no"):
@@ -94,16 +100,21 @@ def handle(msg):
                 pending_apprval_chat_id = msg.get("text").split(' ')[1]
                 if message_status.get(pending_apprval_chat_id) == MessageStatus.PendingApproval:
                     BOT.sendMessage(MICAHMO_ID, "Alright, it's been rejected.")
-                    BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
                     message_status[pending_apprval_chat_id] = MessageStatus.Unknown
+
+                    memeName = ""
 
                     # update our meme data
                     for memeName, meme in meme_data.items():
                         if (meme.submitter == pending_apprval_chat_id and meme.status == MemeStatus.PendingApproval):
+                            memeName = meme.name
                             meme.status = MemeStatus.Rejected
 
+                    #notify the user!
+                    BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
+
             elif chat_id == MICAHMO_ID and msg.get("text").lower() == "/list":
-                BOT.sendMessage(chat_id, meme_data)
+                BOT.sendMessage(chat_id, pickle.encode(meme_data))
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
