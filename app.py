@@ -37,6 +37,7 @@ memes_in_progress = {} #make this local
 
 #some "consts"
 MESSAGE_STATUS_FILENAME = 'message_status.json'
+MEME_DATA_FILENAME = 'meme_data.json'
 
 # message status "enum"
 class MessageStatus:
@@ -44,6 +45,12 @@ class MessageStatus:
     WaitingForMeme = 1
     WaitingForMemeName = 2
     PendingApproval = 3
+
+class MemeStatus:
+    PendingApproval = 0
+    Approved = 1
+    Rejected = 2
+    Removed = 3
 
 class Files:
     MessageStatus = 0
@@ -53,6 +60,7 @@ class Files:
 def handle(msg):
     # load our message status
     message_status = load(Files.MessageStatus)
+    meme_data = load(Files.MemeData)
 
     #get our chat data
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -75,6 +83,12 @@ def handle(msg):
                     BOT.sendMessage(pending_apprval_chat_id, "Congratulations, your meme \"{}\" has been approved!")
                     message_status[pending_apprval_chat_id] = MessageStatus.Unknown
 
+                    # update our meme data
+                    for memeName, meme in meme_data.items():
+                        if (meme.submitter == pending_apprval_chat_id and meme.status == MemeStatus.PendingApproval):
+                            meme.status = MemeStatus.Approved
+
+
             elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("no"):
                 # see if the given chat number is pending approval
                 pending_apprval_chat_id = msg.get("text").split(' ')[1]
@@ -82,6 +96,14 @@ def handle(msg):
                     BOT.sendMessage(MICAHMO_ID, "Alright, it's been rejected.")
                     BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
                     message_status[pending_apprval_chat_id] = MessageStatus.Unknown
+
+                    # update our meme data
+                    for memeName, meme in meme_data.items():
+                        if (meme.submitter == pending_apprval_chat_id and meme.status == MemeStatus.PendingApproval):
+                            meme.status = MemeStatus.Rejected
+
+            elif chat_id == MICAHMO_ID and msg.get("text").lower() == "/list":
+                BOT.sendMessage(chat_id, meme_data)
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
@@ -102,13 +124,30 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
-                BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!".format(msg["text"]))
-                message_status[chat_id] = MessageStatus.PendingApproval
+                memeName = msg["text"].replace(' ', "_")
+                memeFileName = chat_id + ".png" # right now, the meme has the same name as the user
+                memeNewFileName = memeName + ".png" # this is the new name we're gonna give it
 
-                picturePath = chat_id + ".png"
-                open_file(picturePath)
-                BOT.sendPhoto(MICAHMO_ID, open(picturePath, 'rb'))
-                BOT.sendMessage(MICAHMO_ID, "{} {} (@{}) is trying to add the above meme... Reply \"yes {}\" or \"no {}\" to approve or disapprove.".format(msg["chat"]["first_name"], msg["chat"]["last_name"], msg["chat"]["username"], chat_id, chat_id))
+                if (memeName in meme_data):
+                    BOT.sendMessage(chat_id, "Ooh sorry! The name \"{}\" is already taken. Try a different name.".format(msg["text"]))
+                
+                else:
+                    BOT.sendMessage(chat_id, "Alright, I'll call it \"{}\". Now just wait a little while while I add it to my collection!".format(msg["text"]))
+                    message_status[chat_id] = MessageStatus.PendingApproval
+
+                    # download the meme
+                    open_file(memeFileName)
+
+                    # rename and re-upload the meme
+                    os.rename(memeFileName, memeNewFileName)
+                    upload_file(memeNewFileName)
+
+                    # add the meme to our meme data
+                    meme_data[memeName] = Meme(memeName, memeNewFileName, MemeStatus.PendingApproval, chat_id)
+
+                    # send the picture to Micah for approval
+                    BOT.sendPhoto(MICAHMO_ID, open(memeNewFileName, 'rb'))
+                    BOT.sendMessage(MICAHMO_ID, "{} {} (@{}) is trying to add the above meme... Reply \"yes {}\" or \"no {}\" to approve or disapprove.".format(msg["chat"]["first_name"], msg["chat"]["last_name"], msg["chat"]["username"], chat_id, chat_id))
 
             else:
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
@@ -119,8 +158,8 @@ def handle(msg):
                 BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
                 message_status[chat_id] = MessageStatus.WaitingForMemeName
 
-                # save the picture with the id of this chatter
-                pictureName = str(chat_id) + '.png'
+                # save the meme
+                pictureName = chat_id + '.png' # for now, use the chatter's id as the filename
                 BOT.download_file(msg['photo'][-1]['file_id'], pictureName)
                 upload_file(pictureName)
 
@@ -131,8 +170,9 @@ def handle(msg):
             BOT.sendMessage(chat_id, "wat")
 
 
-    # save our message status object
+    # save our important objects
     save(Files.MessageStatus, message_status)
+    save(Files.MemeData, meme_data)
 
     #print our received message, for debugging purposes
     pprint.pprint(message_status)   
@@ -177,7 +217,7 @@ def load(file):
 
 def get_filename_from_file(file):
     if (file == Files.MessageStatus): return MESSAGE_STATUS_FILENAME
-    elif (file == Files.MemeData): return "bla"
+    elif (file == Files.MemeData): return MEME_DATA_FILENAME
     else: return None
 
 def upload_file(fileName):
@@ -237,3 +277,11 @@ if (URL + SECRET) != BOT.getWebhookInfo()['url']:
 
 if (__name__ == "__main__"):
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
+class Meme:
+    def __init__(self, name, fileName, status, submitter):
+        self.name = name
+        self.fileName = fileName
+        self.status = status
+        self.submitter = submitter
