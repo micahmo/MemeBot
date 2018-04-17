@@ -205,12 +205,11 @@ def load(file):
     #now convert the file to an object
     object = {}
     try :
-        with open(fileName) as json_data:
+        with open(fileName, 'rb') as json_data:
             # object = json.load(json_data)
             object = pickle.load(json_data)
  
-    except ex:
-        print(ex)
+    except:
         object = {} # if we can't open it, leave it as an empty object
 
     # now delete our local file
