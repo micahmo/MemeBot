@@ -301,4 +301,4 @@ class Meme:
         self.submitter = submitter
 
     def __str__(self):
-        return pprint.pformat(self, indent=4)
+        return "name: {}, fileName: {}, status: {}, submitted: {}".format(self.name, self.fileName, self.status, self.submitter)
