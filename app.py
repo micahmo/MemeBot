@@ -299,3 +299,6 @@ class Meme:
         self.fileName = fileName
         self.status = status
         self.submitter = submitter
+
+    def __str__(self):
+        return pprint.pformat(self, indent=4)
