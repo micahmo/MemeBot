@@ -184,7 +184,7 @@ def save(file, object):
     if (fileName == None): return
 
     # write our status to a file
-    with open(fileName, 'w') as outfile:
+    with open(fileName, 'wb') as outfile:
         # json.dump(object, outfile) #todo go back to this if jsonpickle doesn't work
         pickle.dump(object, outfile)
 
