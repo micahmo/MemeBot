@@ -114,7 +114,7 @@ def handle(msg):
                     BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
 
             elif chat_id == MICAHMO_ID and msg.get("text").lower() == "/list":
-                BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
+                BOT.sendMessage(chat_id, meme_data)
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
