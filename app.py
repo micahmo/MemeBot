@@ -5,7 +5,7 @@ import telepot
 import pprint
 import time
 from random import randint
-import json
+import pickle
 import boto
 import boto.s3
 import sys
@@ -155,7 +155,7 @@ def handle(msg):
         elif content_type == 'photo':
             
             if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
-                BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it?")
+                BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it? Be as descriptive as possible!")
                 message_status[chat_id] = MessageStatus.WaitingForMemeName
 
                 # save the meme
@@ -185,7 +185,8 @@ def save(file, object):
 
     # write our status to a file
     with open(fileName, 'w') as outfile:
-        json.dump(object, outfile)
+        # json.dump(object, outfile) #todo go back to this if jsonpickle doesn't work
+        pickle.dump(object, outfile)
 
     #write our file to S3
     upload_file(fileName)
@@ -205,7 +206,9 @@ def load(file):
     object = {}
     try :
         with open(fileName) as json_data:
-            object = json.load(json_data)
+            # object = json.load(json_data)
+            object = pickle.load(json_data)
+
     except:
         object = {} # if we can't open it, leave it as an empty object
 
