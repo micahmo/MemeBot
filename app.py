@@ -107,8 +107,8 @@ def handle(msg):
                     # update our meme data
                     for memeName, meme in meme_data.items():
                         if (meme.submitter == pending_apprval_chat_id and meme.status == MemeStatus.PendingApproval):
-                            memeName = meme.name
-                            meme.status = MemeStatus.Rejected
+                            # remove it from the dictionary
+                            meme_data.pop(memeName, None)
 
                     #notify the user!
                     BOT.sendMessage(pending_apprval_chat_id, "Unfortunately, your meme has been rejected. :(")
