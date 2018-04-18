@@ -11,6 +11,7 @@ import boto
 import boto.s3
 import sys
 from boto.s3.key import Key
+import pyimgur
 
 MICAHMO_ID = '76034823'
 
@@ -212,8 +213,20 @@ def handleInline(msg):
     # do our "find" logic
 
     # construct our list of results
-    photo1_url = 'https://s3.us-east-2.amazonaws.com/meme42bot/blinking.png' #get_url_to_file('blinking.png')
+    
+
+    memeFileName = "blinking.png"
+    open_file(memeFileName)
+
+    CLIENT_ID = "Your_applications_client_id"
+    PATH = "blinking.png"
+
+    im = pyimgur.Imgur(CLIENT_ID)
+    uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+
+
     #photo1_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Two_red_dice_01.svg/220px-Two_red_dice_01.svg.png'
+    photo1_url = uploaded_image.link
     photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
     print("i am trying to send url{}".format(photo1_url))
     photos = [InlineQueryResultPhoto(
