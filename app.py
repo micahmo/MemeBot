@@ -293,7 +293,7 @@ def get_url_to_file(fileName):
     k = Key(bucket)
     k.key = fileName
     
-    return k.key.generate_url(expires_in=500000)
+    return k.generate_url(expires_in=500000)
 
 def upload_file(fileName):
     # get our env vars
