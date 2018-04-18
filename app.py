@@ -57,7 +57,7 @@ class Files:
     MemeData = 1
 
 # bot logic
-def handle(msg):
+def handleChat(msg):
     # load our message status
     message_status = load(Files.MessageStatus)
     meme_data = load(Files.MemeData)
@@ -200,6 +200,13 @@ def handle(msg):
     pprint.pprint(message_status)   
 
 
+def handleInline(msg):
+    pprint.pprint(msg)
+
+def handleChosenInline(msg):
+    pprint.pprint(msg)
+
+
 def save(file, object):
 
     fileName = get_filename_from_file(file)
@@ -294,7 +301,7 @@ def open_file(fileName):
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
-BOT.message_loop({'chat': handle}, source=UPDATE_QUEUE)
+BOT.message_loop({'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result', handleChosenInline}, source=UPDATE_QUEUE)
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
     BOT.setWebhook() # unset if was set previously
