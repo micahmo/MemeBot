@@ -214,7 +214,7 @@ def handleInline(msg):
     # construct our list of results
     photo1_url = 'https://s3.us-east-2.amazonaws.com/meme42bot/blinking.png' #get_url_to_file('blinking.png')
     photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
-    print("i am trying to send url{}".format(photo2_url))
+    print("i am trying to send url{}".format(photo1_url))
     photos = [InlineQueryResultPhoto(
               id='12345', photo_url=photo1_url, thumb_url=photo1_url),
           dict(type='photo',
