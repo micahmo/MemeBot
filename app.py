@@ -301,7 +301,7 @@ def open_file(fileName):
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
-BOT.message_loop({'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result', handleChosenInline}, source=UPDATE_QUEUE)
+BOT.message_loop({'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result': handleChosenInline}, source=UPDATE_QUEUE)
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
     BOT.setWebhook() # unset if was set previously
