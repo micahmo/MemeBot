@@ -63,9 +63,7 @@ def handle(msg):
     meme_data = load(Files.MemeData)
 
     #get our chat data
-    try:
-        content_type, chat_type, chat_id = telepot.glance(msg)
-    except:
+    content_type, chat_type, chat_id = telepot.glance(msg)
 
     chat_id = str(chat_id) #if it's not already a string...
     
