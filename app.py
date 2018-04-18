@@ -119,7 +119,7 @@ def handle(msg):
                 BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
 
             elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/delete"):
-                memeToDelete = msg.get("text").lower().split[' '][1]
+                memeToDelete = msg.get("text").lower().split(' ')[1]
                 for memeName, meme in meme_data.items():
                     if (memeName == memeToDelete):
                         meme_data.pop(memeName, None)
