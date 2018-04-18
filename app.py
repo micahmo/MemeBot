@@ -133,7 +133,6 @@ def handleChat(msg):
 
             elif msg.get("text").lower().startswith("/addmeme"):
                 BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
-                upload_file('app.py')
                 message_status[chat_id] = MessageStatus.WaitingForMeme
 
             elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) != MessageStatus.Unknown:
@@ -163,7 +162,7 @@ def handleChat(msg):
 
                     # rename and re-upload the meme
                     os.rename(memeFileName, memeNewFileName)
-                    upload_file(memeNewFileName)
+                    upload_file(memeNewFileName, allowPublic=true) # now we want the meme to be publicly available
 
                     # add the meme to our meme data
                     meme_data[memeName] = Meme(memeName, memeNewFileName, MemeStatus.PendingApproval, chat_id)
@@ -296,7 +295,7 @@ def get_url_to_file(fileName):
     
     return k.generate_url(expires_in=500000)
 
-def upload_file(fileName):
+def upload_file(fileName, allowPublic=false):
     # get our env vars
     S3_BUCKET = os.environ.get('S3_BUCKET')
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
@@ -316,6 +315,9 @@ def upload_file(fileName):
     k = Key(bucket)
     k.key = fileName
     k.set_contents_from_filename(fileName)
+
+    if (allowPublic):
+        k.set_acl('public-read')
 
 def open_file(fileName):
     S3_BUCKET = os.environ.get('S3_BUCKET')
@@ -368,3 +370,4 @@ class Meme:
 
     def __repr__(self):
         return "name: {}, fileName: {}, status: {}, submitter: {}".format(self.name, self.fileName, self.status, self.submitter)
+ 
