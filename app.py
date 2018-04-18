@@ -314,7 +314,7 @@ def open_file(fileName):
 
 # set up bot
 BOT = telepot.Bot(TOKEN)
-answerer = telepot.aio.helper.Answerer(BOT)
+answerer = telepot.helper.Answerer(BOT)
 UPDATE_QUEUE = Queue()
 
 BOT.message_loop({'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result': handleChosenInline}, source=UPDATE_QUEUE)
