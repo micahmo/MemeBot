@@ -123,6 +123,8 @@ def handle(msg):
                 for memeName, meme in meme_data.items():
                     if (memeName == memeToDelete):
                         meme_data.pop(memeName, None)
+                        BOT.sendMessage(chat_id, "Meme {} deleted.".format(memeName))
+                        break
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
