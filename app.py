@@ -2,7 +2,7 @@ import os
 import os.path
 from flask import Flask, request
 import telepot
-from telepot.namedtuple import InlineQueryResultArticle, InlineQueryResultPhoto
+from telepot.namedtuple import InlineQueryResultPhoto
 import pprint
 import time
 from random import randint
@@ -213,10 +213,15 @@ def handleInline(msg):
     # do our "find" logic
 
     # construct our list of results
-    photos = [InlineQueryResultPhoto(id='blinking', photo_url='https://s3.us-east-2.amazonaws.com/meme42bot/blinking.png?response-content-disposition=inline&X-Amz-Security-Token=FQoDYXdzEMX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDH7XmQdoX5OEq5FaSCK4A8pwA1JbPukkPOqDXNrn0UmdBiW0RLWJRX6wl7dEJ%2BVmFtLurcbBgH551fMW8jLwPnzOOSY2siGJ0GNdcWfl%2Bm8FGdPAqQFPuqiIRXtBXA5FSwnD83Dk%2B6uECfiuP5hWOZcj8gjuF4bjj9G8%2BoqxyYVDU9qbrUseSqsQD2WqulNaQuwyvhvRFQaYDZ6xFyEYI%2FHOvOZuJQB66ysCRDl0aPLzpaADw7rexuKIxVlICRL9H0y0%2BEzt9SS%2BD9P%2B1xpPSjckQgWlXgP7YC%2Fjs2Hlo45J0nWWsB11egzDMZj%2Fg2K1YY4Yobf4GRa1fh%2Bnv69fTHGbjyb1bzkiSphPAZRVbNuyGh0dCdnQERkrTPRxqR1Hbtph0jVu3ZMeklY3dtWFsAvG2s8onBamLoRdM2VynM%2FvTDIv21m47nPigKRU5%2BQ6ZYJmRKg7F%2B1SInCuLlDZwN%2FBVEug0OO%2FrlGuSEHfpo78q%2BKOF%2Bjzo7YTWP%2B0lLC1XDG6%2BXgYEvOuc65IahZzN%2BYb875z99LPl6dwQ2CHrrGAsm8BUIW%2FaOKcRmZKB0WWU%2FopnkmbflAL%2BwdY%2BUCcUi7nNCJ92MgJKM%2FB3tYF&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180418T201838Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAJYKPUTYRSTUBZEHQ%2F20180418%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=ec26340b13a133db6795a932924f5a03cc2fc4d41ee5889f7326fd71ce29344c', thumb_url='https://s3.us-east-2.amazonaws.com/meme42bot/blinking.png?response-content-disposition=inline&X-Amz-Security-Token=FQoDYXdzEMX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDH7XmQdoX5OEq5FaSCK4A8pwA1JbPukkPOqDXNrn0UmdBiW0RLWJRX6wl7dEJ%2BVmFtLurcbBgH551fMW8jLwPnzOOSY2siGJ0GNdcWfl%2Bm8FGdPAqQFPuqiIRXtBXA5FSwnD83Dk%2B6uECfiuP5hWOZcj8gjuF4bjj9G8%2BoqxyYVDU9qbrUseSqsQD2WqulNaQuwyvhvRFQaYDZ6xFyEYI%2FHOvOZuJQB66ysCRDl0aPLzpaADw7rexuKIxVlICRL9H0y0%2BEzt9SS%2BD9P%2B1xpPSjckQgWlXgP7YC%2Fjs2Hlo45J0nWWsB11egzDMZj%2Fg2K1YY4Yobf4GRa1fh%2Bnv69fTHGbjyb1bzkiSphPAZRVbNuyGh0dCdnQERkrTPRxqR1Hbtph0jVu3ZMeklY3dtWFsAvG2s8onBamLoRdM2VynM%2FvTDIv21m47nPigKRU5%2BQ6ZYJmRKg7F%2B1SInCuLlDZwN%2FBVEug0OO%2FrlGuSEHfpo78q%2BKOF%2Bjzo7YTWP%2B0lLC1XDG6%2BXgYEvOuc65IahZzN%2BYb875z99LPl6dwQ2CHrrGAsm8BUIW%2FaOKcRmZKB0WWU%2FopnkmbflAL%2BwdY%2BUCcUi7nNCJ92MgJKM%2FB3tYF&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180418T201838Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAJYKPUTYRSTUBZEHQ%2F20180418%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=ec26340b13a133db6795a932924f5a03cc2fc4d41ee5889f7326fd71ce29344c')]
+    photo1_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
+    photo2_url = 'https://www.telegram.org/img/t_logo.png'
+    photos = [InlineQueryResultPhoto(
+              id='12345', photo_url=photo1_url, thumb_url=photo1_url),
+          dict(type='photo',
+              id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
 
-    # return our results
     BOT.answerInlineQuery(query_id, photos)
+
 
 
 def handleChosenInline(msg):
