@@ -118,6 +118,12 @@ def handle(msg):
             elif chat_id == MICAHMO_ID and msg.get("text").lower() == "/list":
                 BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
 
+            elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/delete"):
+                memeToDelete = msg.get("text").lower().split[' '][1]
+                for memeName, meme in meme_data.items():
+                    if (memeName == memeToDelete):
+                        meme_data.pop(memeName, None)
+
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to my collection!".format(msg["chat"]["first_name"]))
 
