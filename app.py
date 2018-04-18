@@ -63,7 +63,10 @@ def handle(msg):
     meme_data = load(Files.MemeData)
 
     #get our chat data
-    content_type, chat_type, chat_id = telepot.glance(msg)
+    try:
+        content_type, chat_type, chat_id = telepot.glance(msg)
+    except:
+
     chat_id = str(chat_id) #if it's not already a string...
     
     print(content_type)
@@ -293,7 +296,7 @@ def open_file(fileName):
 BOT = telepot.Bot(TOKEN)
 UPDATE_QUEUE = Queue()
 
-BOT.message_loop(handle, source=UPDATE_QUEUE)
+BOT.message_loop({'chat': handle}, source=UPDATE_QUEUE)
 
 if (URL + SECRET) != BOT.getWebhookInfo()['url']:
     BOT.setWebhook() # unset if was set previously
