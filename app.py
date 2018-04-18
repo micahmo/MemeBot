@@ -214,7 +214,7 @@ def handleInline(msg):
 
     # construct our list of results
     photo1_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
-    photo2_url = 'https://www.telegram.org/img/t_logo.png'
+    photo2_url = get_url_to_file('blinking.png')
     photos = [InlineQueryResultPhoto(
               id='12345', photo_url=photo1_url, thumb_url=photo1_url),
           dict(type='photo',
@@ -272,6 +272,28 @@ def get_filename_from_file(file):
     if (file == Files.MessageStatus): return MESSAGE_STATUS_FILENAME
     elif (file == Files.MemeData): return MEME_DATA_FILENAME
     else: return None
+
+def get_url_to_file(fileName):
+    # get our env vars
+    S3_BUCKET = os.environ.get('S3_BUCKET')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    
+    # set up some environment variables that boto will need
+    os.environ['S3_USE_SIGV4'] = 'True'
+    os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
+
+    # get the connection
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
+    
+    # get the bucket
+    bucket = conn.get_bucket(S3_BUCKET)
+    
+    # create the file
+    k = Key(bucket)
+    k.key = fileName
+    
+    return k.key.generate_url(expires_in=500000)
 
 def upload_file(fileName):
     # get our env vars
