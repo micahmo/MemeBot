@@ -162,7 +162,7 @@ def handleChat(msg):
 
                     # rename and re-upload the meme
                     os.rename(memeFileName, memeNewFileName)
-                    upload_file(memeNewFileName, allowPublic=true) # now we want the meme to be publicly available
+                    upload_file(memeNewFileName, allowPublic=True) # now we want the meme to be publicly available
 
                     # add the meme to our meme data
                     meme_data[memeName] = Meme(memeName, memeNewFileName, MemeStatus.PendingApproval, chat_id)
@@ -295,7 +295,7 @@ def get_url_to_file(fileName):
     
     return k.generate_url(expires_in=500000)
 
-def upload_file(fileName, allowPublic=false):
+def upload_file(fileName, allowPublic=False):
     # get our env vars
     S3_BUCKET = os.environ.get('S3_BUCKET')
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
