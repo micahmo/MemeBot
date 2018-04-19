@@ -108,8 +108,6 @@ def handleChat(msg):
                     if (value.submitter == chat_id):
                         result += "\n" + value.name.replace("_", " ")
                 
-                print ("len(result) == {}".format(len(result)))
-                
                 if (len(result) > 0):
                     BOT.sendMessage(chat_id, result)
                 else:
@@ -120,7 +118,8 @@ def handleChat(msg):
                 try:
                     memeToDeleteName = msg.get("text")[s.index(' ') + 1:].replace(' ', '_')
                     for key, value in meme_data.items():
-                        if (value.name == memeToDeleteName):
+                        print("name: {}, nameToDelete: {}".format(value.name, memeToDeleteName))
+                        if (value.submitter == chat_id and value.name == memeToDeleteName):
                             meme_data.pop(key, None)
                             memeDeleted = True
                             break
@@ -223,22 +222,8 @@ def handleInline(msg):
     for (fileId, relevancy) in fileIdsToSortedRelevancy:
         photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
 
-    # construct our list of results
-    
-    # #photo1_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Two_red_dice_01.svg/220px-Two_red_dice_01.svg.png'
-    # photo1_url = get_url_to_file("blinking.png")
-    # photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
-    # print("i am trying to send url {}".format(photo1_url))
-    # photos = [InlineQueryResultCachedPhoto(
-    #           id='12345', photo_file_id='AgADAQADFqgxG1n1yEYVAAFajHuCTJ2NIfcvAAQjK7Lfx5FfqPTIAgABAg'),
-    #       dict(type='photo',
-    #           id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
-
     # respond with our results
     res = BOT.answerInlineQuery(query_id, photos)
-
-    print ("result of \"answerInlineQuery\" is {}".format(str(res)))
-
 
 
 def handleChosenInline(msg):
