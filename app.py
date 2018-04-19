@@ -80,12 +80,13 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
 
             elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/delete"):
-                memeToDeleteFileId = msg.get("text").lower().split(' ')[1]
+                memeToDeleteFileId = msg.get("text").split(' ')[1]
                 for key, value in meme_data.items():
                     if (value.fileId == memeToDeleteFileId):
                         meme_data.pop(key, None)
                         BOT.sendMessage(chat_id, "Deleted.")
                         break
+                    BOT.sendMessage(chat_id, "Meme not found.")
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to your collection!".format(msg["chat"]["first_name"]))
