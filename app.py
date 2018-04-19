@@ -292,8 +292,15 @@ def get_url_to_file(fileName):
     # create the file
     k = Key(bucket)
     k.key = fileName
+
+    # try new fancy thing
+    url = connection.generate_url(60, 'GET', S3_BUCKET, k, response_headers={
+        'response-content-type': 'application/octet-stream'
+    })
+
     
-    return k.generate_url(expires_in=500000)
+    #return k.generate_url(expires_in=500000)
+    return url
 
 def upload_file(fileName, allowPublic=False):
     # get the connection
