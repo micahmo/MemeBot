@@ -106,6 +106,9 @@ def handleChat(msg):
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id):
                         result += "\n" + value.name.replace("_", " ")
+                
+                print ("result == {}".format(result))
+                
                 if (result):
                     BOT.sendMessage(chat_id, result)
                 else:
