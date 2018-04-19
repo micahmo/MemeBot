@@ -106,7 +106,7 @@ def handleChat(msg):
                 for key, value in meme_data:
                     if (value.submitter == chat_id):
                         result += "\n" + value.name.replace("_", " ")
-                BOT.sendMessage(chat_id, result)
+                BOT.sendMessage(chat_id, result if result != "" else "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
             
             elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
