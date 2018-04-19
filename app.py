@@ -300,7 +300,7 @@ def get_url_to_file(fileName):
 
     # url = k.generate_url(expires_in=500000, response_headers={'response-content-type': 'application/octet-stream'})
 
-    url = k.generate_url(expires_in=None)
+    url = k.generate_url(expires_in=50000, query_auth=True, force_http=True)
     
     #return k.generate_url(expires_in=500000)
     return url
