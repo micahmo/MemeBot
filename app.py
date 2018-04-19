@@ -56,12 +56,12 @@ class MessageStatus:
     WaitingForMemeName = 2
     PendingApproval = 3
 
+# meme status "enum"
 class MemeStatus:
     PendingApproval = 0
     Approved = 1
-    Rejected = 2
-    Removed = 3
 
+# list of files "enum"
 class Files:
     MessageStatus = 0
     MemeData = 1
@@ -225,7 +225,7 @@ def handleInline(msg):
     #photo1_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Two_red_dice_01.svg/220px-Two_red_dice_01.svg.png'
     photo1_url = get_url_to_file("blinking.png")
     photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
-    print("i am trying to send url{}".format(photo1_url))
+    print("i am trying to send url {}".format(photo1_url))
     photos = [InlineQueryResultPhoto(
               id='12345', photo_url=photo1_url, thumb_url=photo1_url),
           dict(type='photo',
@@ -245,7 +245,6 @@ def save(file, object):
 
     # write our status to a file
     with open(fileName, 'wb') as outfile:
-        # json.dump(object, outfile) #todo go back to this if jsonpickle doesn't work
         pickle.dump(object, outfile)
 
     #write our file to S3
@@ -265,7 +264,6 @@ def load(file):
     object = {}
     try :
         with open(fileName, 'rb') as json_data:
-            # object = json.load(json_data)
             object = pickle.load(json_data)
  
     except:
@@ -329,7 +327,6 @@ def open_file(fileName):
 
 # set up bot
 BOT = telepot.Bot(TOKEN)
-answerer = telepot.helper.Answerer(BOT)
 UPDATE_QUEUE = Queue()
 
 BOT.message_loop({'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result': handleChosenInline}, source=UPDATE_QUEUE)
