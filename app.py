@@ -11,6 +11,7 @@ import boto
 import boto.s3
 import sys
 from boto.s3.key import Key
+import operator
 
 MICAHMO_ID = '76034823'
 
@@ -180,19 +181,40 @@ def handleInline(msg):
     # get our chat data
     query_id, from_id, query_string = telepot.glance(msg, flavor='inline_query')
 
+    photos = []
+
     # do our "find" logic
+    keywords = query_string.split(' ')
+    fileIdsToRelevancy = {}
+
+    for key, value in meme_data.items():
+        if (value.submitter == chat_id): # this is a meme for this person
+            relevancy = 0
+            for keyword in keywords:
+                if (keyword in value.name):
+                    relevancy = relevancy + 1
+            if relevancy > 0
+                fileIdsToRelevancy[key] = relevancy
+
+    # sort out dictionary by relevancy
+    fileIdsToSortedRelevancy = sorted(fileIdsToRelevancy.items(), key=operator.itemgetter(1), reverse=True)
+    
+    # now we have a sorted list of tuples, so grab our fileIds and construct our actual results lists
+    for (fileId, relevancy) in fileIdsToSortedRelevancy:
+        photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
 
     # construct our list of results
     
-    #photo1_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Two_red_dice_01.svg/220px-Two_red_dice_01.svg.png'
-    photo1_url = get_url_to_file("blinking.png")
-    photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
-    print("i am trying to send url {}".format(photo1_url))
-    photos = [InlineQueryResultCachedPhoto(
-              id='12345', photo_file_id='AgADAQADFqgxG1n1yEYVAAFajHuCTJ2NIfcvAAQjK7Lfx5FfqPTIAgABAg'),
-          dict(type='photo',
-              id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
+    # #photo1_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Two_red_dice_01.svg/220px-Two_red_dice_01.svg.png'
+    # photo1_url = get_url_to_file("blinking.png")
+    # photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
+    # print("i am trying to send url {}".format(photo1_url))
+    # photos = [InlineQueryResultCachedPhoto(
+    #           id='12345', photo_file_id='AgADAQADFqgxG1n1yEYVAAFajHuCTJ2NIfcvAAQjK7Lfx5FfqPTIAgABAg'),
+    #       dict(type='photo',
+    #           id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
 
+    # respond with our results
     res = BOT.answerInlineQuery(query_id, photos)
 
     print ("result of \"answerInlineQuery\" is {}".format(str(res)))
