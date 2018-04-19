@@ -77,10 +77,10 @@ def handleChat(msg):
         if content_type == 'text':
             
             # a couple of special commands for me
-            if chat_id == MICAHMO_ID and msg.get("text").lower() == "/list":
+            if chat_id == MICAHMO_ID and msg.get("text").lower() == "/sudolist":
                 BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
 
-            elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/delete"):
+            elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/sudodelete"):
                 memeToDeleteFileId = msg.get("text").split(' ')[1]
                 for key, value in meme_data.items():
                     if (value.fileId == memeToDeleteFileId):
