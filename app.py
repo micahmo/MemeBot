@@ -103,7 +103,7 @@ def handleChat(msg):
 
             elif msg.get("text").lower().startswith("/listmymemes"):
                 result = ""
-                for key, value in meme_data:
+                for key, value in meme_data.items():
                     if (value.submitter == chat_id):
                         result += "\n" + value.name.replace("_", " ")
                 BOT.sendMessage(chat_id, result if result != "" else "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
@@ -114,14 +114,14 @@ def handleChat(msg):
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
                 userMemeName = msg["text"].replace(' ', "_")
 
-                for key, value in meme_data:
+                for key, value in meme_data.items():
                     if (value.submitter == chat_id and value.name == userMemeName):
                         BOT.sendMessage(chat_id, "Ooh, looks like you've already added a meme with the name \"{}\" to your library. Try another one!.".format(msg["text"]))
                 
                 else:
                     # find the meme in our meme_data
                     memeObject = {}
-                    for key, value in meme_data:
+                    for key, value in meme_data.items():
                         if (key == chat_id): # this is the meme pending a name
                             memeObject = value
                             meme_data.pop(key, None)
