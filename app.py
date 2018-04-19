@@ -231,7 +231,7 @@ def handleInline(msg):
           dict(type='photo',
               id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
 
-    var res = BOT.answerInlineQuery(query_id, photos)
+    res = BOT.answerInlineQuery(query_id, photos)
 
     print ("result of \"answerInlineQuery\" is {}".format(str(res)))
 
