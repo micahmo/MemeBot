@@ -116,7 +116,7 @@ def handleChat(msg):
             elif msg.get("text").lower().startswith("/deletememe"):
                 memeDeleted = False
                 try:
-                    memeToDeleteName =  (' '.join(msg.get("text").split(' ')[1:])).replace(' ', '_')
+                    memeToDeleteName =  (' '.join(msg.get("text").lower().split(' ')[1:])).replace(' ', '_')
                     for key, value in meme_data.items():
                         print("name: {}, nameToDelete: {}".format(value.name, memeToDeleteName))
                         if (value.submitter == chat_id and value.name == memeToDeleteName):
@@ -136,7 +136,7 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
-                userMemeName = msg["text"].replace(' ', "_")
+                userMemeName = msg["text"].lower().replace(' ', "_")
 
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id and value.name == userMemeName):
@@ -203,7 +203,7 @@ def handleInline(msg):
     photos = []
 
     # do our "find" logic
-    keywords = query_string.split(' ')
+    keywords = query_string.lower().split(' ')
     fileIdsToRelevancy = {}
 
     for key, value in meme_data.items():
