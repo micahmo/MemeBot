@@ -312,7 +312,7 @@ if (__name__ == "__main__"):
 class Meme:
     def __init__(self, name, fileId, submitter, submitterUsername):
         self.name = name
-        self.fileId
+        self.fileId = fileId
         self.submitter = submitter
         self.submitterUsername = submitterUsername
 
