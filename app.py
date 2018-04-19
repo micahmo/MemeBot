@@ -14,12 +14,21 @@ from boto.s3.key import Key
 
 MICAHMO_ID = '76034823'
 
+
+# set some consts that we'll need later on for the bot
 PORT = int(os.environ.get('PORT', 5000))
 TOKEN = "554574433:AAE6O2v3sm7yEQ9kJYW7GPp-JGnrUSyUMGM"
 SECRET = "/BOT" + TOKEN
 URL = "https://memebot42.herokuapp.com/"
 
+# get some environment variables that we'll need later
+S3_BUCKET = os.environ.get('S3_BUCKET')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
+# do some S3 setup
+os.environ['S3_USE_SIGV4'] = 'True'
+os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
 
 # set up Flask
 try:
@@ -231,7 +240,6 @@ def handleChosenInline(msg):
 
 
 def save(file, object):
-
     fileName = get_filename_from_file(file)
     if (fileName == None): return
 
@@ -247,7 +255,6 @@ def save(file, object):
     os.remove(fileName)
 
 def load(file):
-
     fileName = get_filename_from_file(file)
     if (fileName == None): return
 
@@ -276,15 +283,6 @@ def get_filename_from_file(file):
     else: return None
 
 def get_url_to_file(fileName):
-    # get our env vars
-    S3_BUCKET = os.environ.get('S3_BUCKET')
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    
-    # set up some environment variables that boto will need
-    os.environ['S3_USE_SIGV4'] = 'True'
-    os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
-
     # get the connection
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
     
@@ -298,15 +296,6 @@ def get_url_to_file(fileName):
     return k.generate_url(expires_in=500000)
 
 def upload_file(fileName, allowPublic=False):
-    # get our env vars
-    S3_BUCKET = os.environ.get('S3_BUCKET')
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    
-    # set up some environment variables that boto will need
-    os.environ['S3_USE_SIGV4'] = 'True'
-    os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
-
     # get the connection
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
     
@@ -322,14 +311,6 @@ def upload_file(fileName, allowPublic=False):
         k.set_acl('public-read')
 
 def open_file(fileName):
-    S3_BUCKET = os.environ.get('S3_BUCKET')
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-
-    # set up some environment variables that boto will need
-    os.environ['S3_USE_SIGV4'] = 'True'
-    os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
-
     # get the connection
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
     
@@ -345,6 +326,7 @@ def open_file(fileName):
         open(fileName, 'a').close() #create an empty file if we can't find one on the server
 
 
+
 # set up bot
 BOT = telepot.Bot(TOKEN)
 answerer = telepot.helper.Answerer(BOT)
@@ -358,6 +340,9 @@ if (URL + SECRET) != BOT.getWebhookInfo()['url']:
 
 if (__name__ == "__main__"):
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
+
 
 
 class Meme:
