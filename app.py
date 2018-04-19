@@ -142,7 +142,7 @@ def handleChat(msg):
 
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id and value.name == userMemeName):
-                        BOT.sendMessage(chat_id, "Ooh, looks like you've already added a meme with the name \"{}\" to your library. Try another one!.".format(msg["text"]))
+                        BOT.sendMessage(chat_id, "Ooh, looks like you've already added a meme with the name \"{}\" to your library. Try another one!".format(msg["text"]))
                         duplicateName = True
                 
                 if not duplicateName:
