@@ -294,9 +294,11 @@ def get_url_to_file(fileName):
     k.key = fileName
 
     # try new fancy thing
-    url = conn.generate_url(60, 'GET', S3_BUCKET, k, response_headers={
-        'response-content-type': 'application/octet-stream'
-    })
+    # url = conn.generate_url(60, 'GET', S3_BUCKET, k, response_headers={
+    #     'response-content-type': 'application/octet-stream'
+    # })
+
+    url = k.generate_url(expires_in=500000, response_headers={'response-content-type': 'application/octet-stream'})
 
     
     #return k.generate_url(expires_in=500000)
