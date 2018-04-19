@@ -226,7 +226,7 @@ def handleInline(msg):
         photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
 
     # respond with our results
-    res = BOT.answerInlineQuery(query_id, photos)
+    res = BOT.answerInlineQuery(query_id, photos, cache_time=0)
 
 
 def handleChosenInline(msg):
