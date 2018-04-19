@@ -107,9 +107,9 @@ def handleChat(msg):
                     if (value.submitter == chat_id):
                         result += "\n" + value.name.replace("_", " ")
                 
-                print ("result == {}".format(result))
+                print ("len(result) == {}".format(len(result)))
                 
-                if (result):
+                if (len(result) > 0):
                     BOT.sendMessage(chat_id, result)
                 else:
                     BOT.sendMessage(chat_id, "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
