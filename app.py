@@ -138,11 +138,14 @@ def handleChat(msg):
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName:
                 userMemeName = msg["text"].lower().replace(' ', "_")
 
+                duplicateName = False
+
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id and value.name == userMemeName):
                         BOT.sendMessage(chat_id, "Ooh, looks like you've already added a meme with the name \"{}\" to your library. Try another one!.".format(msg["text"]))
+                        duplicateName = True
                 
-                else:
+                if not duplicateName:
                     # find the meme in our meme_data
                     memeObject = {}
                     for key, value in meme_data.items():
