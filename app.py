@@ -116,7 +116,7 @@ def handleChat(msg):
             elif msg.get("text").lower().startswith("/deletememe"):
                 memeDeleted = False
                 try:
-                    memeToDeleteName = msg.get("text")[s.index(' ') + 1:].replace(' ', '_')
+                    memeToDeleteName =  (' '.join(msg.get("text").split(' ')[1:])).replace(' ', '_')
                     for key, value in meme_data.items():
                         print("name: {}, nameToDelete: {}".format(value.name, memeToDeleteName))
                         if (value.submitter == chat_id and value.name == memeToDeleteName):
