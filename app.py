@@ -227,7 +227,7 @@ def handleInline(msg):
     photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
     print("i am trying to send url {}".format(photo1_url))
     photos = [InlineQueryResultCachedPhoto(
-              id='12345', photo_file_id='AgADAQADFagxG1n1yEaLLcKq23Cn22clAzAABPbbsV8IhmpjVykCAAEC'),
+              id='12345', photo_file_id='AgADAQADFqgxG1n1yEYVAAFajHuCTJ2NIfcvAAQjK7Lfx5FfqPTIAgABAg'),
           dict(type='photo',
               id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
 
