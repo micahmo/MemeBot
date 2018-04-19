@@ -181,6 +181,9 @@ def handleInline(msg):
     # get our chat data
     query_id, from_id, query_string = telepot.glance(msg, flavor='inline_query')
 
+    # make the id a string, if it's not already
+    from_id = str(from_id)
+
     photos = []
 
     # do our "find" logic
@@ -188,7 +191,7 @@ def handleInline(msg):
     fileIdsToRelevancy = {}
 
     for key, value in meme_data.items():
-        if (value.submitter == chat_id): # this is a meme for this person
+        if (value.submitter == from_id): # this is a meme for this person
             relevancy = 0
             for keyword in keywords:
                 if (keyword in value.name):
