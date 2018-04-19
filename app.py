@@ -193,7 +193,7 @@ def handleInline(msg):
             for keyword in keywords:
                 if (keyword in value.name):
                     relevancy = relevancy + 1
-            if relevancy > 0
+            if relevancy > 0:
                 fileIdsToRelevancy[key] = relevancy
 
     # sort out dictionary by relevancy
