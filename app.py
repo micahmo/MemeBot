@@ -87,7 +87,6 @@ def handleChat(msg):
                         meme_data.pop(key, None)
                         BOT.sendMessage(chat_id, "Deleted.")
                         break
-                    BOT.sendMessage(chat_id, "Meme not found.")
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to your collection!".format(msg["chat"]["first_name"]))
@@ -115,6 +114,24 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, result)
                 else:
                     BOT.sendMessage(chat_id, "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
+
+            elif msg.get("text").lower().startswith("/deletememe"):
+                memeDeleted = False
+                try:
+                    memeToDeleteName = msg.get("text")[s.index(' ') + 1:].replace(' ', '_')
+                    for key, value in meme_data.items():
+                        if (value.name == memeToDeleteName):
+                            meme_data.pop(key, None)
+                            memeDeleted = True
+                            break
+                except:
+                    pass
+                finally:
+                    if memeDeleted:
+                        BOT.sendMessage(chat_id, "Deleted!")
+                    else:
+                        BOT.sendMessage(chat_id, "Meme not found.")
+                    
             
             elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
