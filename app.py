@@ -130,7 +130,7 @@ def handleChat(msg):
                     if memeDeleted:
                         BOT.sendMessage(chat_id, "Deleted!")
                     else:
-                        BOT.sendMessage(chat_id, "Meme not found.")
+                        BOT.sendMessage(chat_id, "Meme not found. Try sending /listmymemes to see a list of your memes that you can delete.")
                     
             
             elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
