@@ -2,7 +2,7 @@ import os
 import os.path
 from flask import Flask, request
 import telepot
-from telepot.namedtuple import InlineQueryResultPhoto
+from telepot.namedtuple import InlineQueryResultCachedPhoto
 import pprint
 import time
 from random import randint
@@ -226,8 +226,8 @@ def handleInline(msg):
     photo1_url = get_url_to_file("blinking.png")
     photo2_url = 'https://core.telegram.org/file/811140934/1/tbDSLHSaijc/fdcc7b6d5fb3354adf'
     print("i am trying to send url {}".format(photo1_url))
-    photos = [InlineQueryResultPhoto(
-              id='12345', photo_url=photo1_url, thumb_url=photo1_url),
+    photos = [InlineQueryResultCachedPhoto(
+              id='12345', photo_file_id='AgADAQADFagxG1n1yEaLLcKq23Cn22clAzAABPbbsV8IhmpjVykCAAEC'),
           dict(type='photo',
               id='67890', photo_url=photo2_url, thumb_url=photo2_url)]
 
