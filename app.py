@@ -59,23 +59,22 @@ class Files:
 
 # bot logic
 def handleChat(msg):
-    # load our message status
-    message_status = load(Files.MessageStatus)
-    meme_data = load(Files.MemeData)
-
-    #get our chat data
-    content_type, chat_type, chat_id = telepot.glance(msg)
-
-    chat_id = str(chat_id) #if it's not already a string...
-    
-    # print the message info out, for debugging
-    print(content_type)
-    pprint.pprint(msg)
-
     if chat_type == "private":
 
+        # load our message status
+        message_status = load(Files.MessageStatus)
+        meme_data = load(Files.MemeData)
+
+        #get our chat data
+        content_type, chat_type, chat_id = telepot.glance(msg)
+
+        chat_id = str(chat_id) #if it's not already a string...
+        
+        # print the message info out, for debugging
+        print(content_type)
+        pprint.pprint(msg)
+
         if content_type == 'text':
-            
             # a couple of special commands for me
             if chat_id == MICAHMO_ID and msg.get("text").lower() == "/sudolist":
                 BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
