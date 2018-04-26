@@ -181,13 +181,12 @@ def handleChat(msg):
         else:
             BOT.sendMessage(chat_id, "wat")
 
+        # save our important objects
+        save(Files.MessageStatus, message_status)
+        save(Files.MemeData, meme_data)
 
-    # save our important objects
-    save(Files.MessageStatus, message_status)
-    save(Files.MemeData, meme_data)
-
-    #print our received message, for debugging purposes
-    pprint.pprint(message_status)   
+        #print our received message, for debugging purposes
+        pprint.pprint(message_status)   
 
 
 def handleInline(msg):
