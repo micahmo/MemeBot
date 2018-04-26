@@ -59,14 +59,14 @@ class Files:
 
 # bot logic
 def handleChat(msg):
+    #get our chat data
+    content_type, chat_type, chat_id = telepot.glance(msg)
+
     if chat_type == "private":
 
         # load our message status
         message_status = load(Files.MessageStatus)
         meme_data = load(Files.MemeData)
-
-        #get our chat data
-        content_type, chat_type, chat_id = telepot.glance(msg)
 
         chat_id = str(chat_id) #if it's not already a string...
         
