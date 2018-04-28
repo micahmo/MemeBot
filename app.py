@@ -90,6 +90,7 @@ def handleChat(msg):
 
             elif msg.get("text").lower() == "/start" or msg.get("text").lower() == "/help":
                 BOT.sendMessage(chat_id, "Hi {}! I am a customizable meme bot. :) Send me memes with the /addmeme command, and I'll add them to your collection!".format(msg["chat"]["first_name"]))
+                message_status[chat_id] = MessageStatus.Unknown
 
             elif msg.get("text").lower().startswith("/addmeme"):
                 BOT.sendMessage(chat_id, "Awesome! Send me the meme!")
@@ -101,6 +102,7 @@ def handleChat(msg):
 
             elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) == MessageStatus.Unknown:
                 BOT.sendMessage(chat_id, "Well, there's nothing to cancel, but ok. :)", reply_markup=ReplyKeyboardRemove())
+                message_status[chat_id] = MessageStatus.Unknown
 
             elif msg.get("text").lower().startswith("/listmymemes"):
                 result = ""
@@ -112,6 +114,8 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, result)
                 else:
                     BOT.sendMessage(chat_id, "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
+
+                message_status[chat_id] = MessageStatus.Unknown
 
             elif msg.get("text").lower().startswith("/deletememe"):
                 # send the user a list of their memes as a "custom keyboard"
@@ -190,10 +194,11 @@ def handleChat(msg):
             
             if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
                 BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it? Be as descriptive as possible!")
-                message_status[chat_id] = MessageStatus.WaitingForMemeName
 
                 # save the meme under the user's id
                 meme_data[chat_id] = Meme("", msg['photo'][-1]['file_id'], chat_id, msg.get("chat").get("username"))
+
+                message_status[chat_id] = MessageStatus.WaitingForMemeName
 
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't sent a picture...
                 BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
