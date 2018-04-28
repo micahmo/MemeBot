@@ -123,7 +123,7 @@ def handleChat(msg):
                             KeyboardButton(text=value.name.replace('_', ' '))
                         ])
                 
-                keyboard = ReplyKeyboardMarkup(keyboard=custom_keyboard)
+                keyboard = ReplyKeyboardMarkup(keyboard=custom_keyboard, one_time_keyboard=True)
                 BOT.sendMessage(chat_id, "Tell me which meme you want to delete...", reply_markup=keyboard)
 
                 # put the user in "deleting meme" mode
