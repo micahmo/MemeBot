@@ -143,10 +143,10 @@ def handleChat(msg):
                 finally:
                     if memeDeleted:
                         # tell the user we deleted their meme
-                        BOT.sendMessage(chat_id, "Deleted!")
+                        BOT.sendMessage(chat_id, "Deleted!", reply_markup=None)
                     else:
                         # tell the user we couldn't find their meme
-                        BOT.sendMessage(chat_id, "Meme name not found.")
+                        BOT.sendMessage(chat_id, "Meme name not found.", reply_markup=None)
 
                 # put the user in back in "unknown" mode
                 message_status[chat_id] = MessageStatus.Unknown
