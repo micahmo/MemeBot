@@ -78,8 +78,13 @@ def handleChat(msg):
         if content_type == 'text':
             # a couple of special commands for me
             if chat_id == MICAHMO_ID and msg.get("text").lower() == "/sudolist":
-                sudo_list = pprint.pformat(meme_data, indent=4)
+                # first print it out to the console
+                pprint.pprint(meme_data, indent=4)
 
+                # now send it to me
+                sudo_list = pprint.pformat(meme_data, indent=4)
+                
+                # have to split it up into chunks in case it is too long
                 chunks, chunk_size = len(sudo_list), len(sudo_list)//4096
                 list_of_messages = sudo_list[i : i + chunk_size] for i in range(0, chunks, chunk_size)
 
