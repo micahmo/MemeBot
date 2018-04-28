@@ -211,6 +211,8 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
             else:
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
+
+            print("gif file id is: {}".format(msg['document'][-1]['file_id']))
         
         else:
             if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
