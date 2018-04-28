@@ -2,7 +2,7 @@ import os
 import os.path
 from flask import Flask, request
 import telepot
-from telepot.namedtuple import InlineQueryResultCachedPhoto, InlineQueryResultCachedDocument, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telepot.namedtuple import InlineQueryResultCachedPhoto, InlineQueryResultCachedGif, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 import pprint
 import time
 from random import randint
@@ -279,7 +279,7 @@ def handleInline(msg):
             photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
         elif ("animation" in file.get("file_path")):
             # it's a gif
-            photos.append(InlineQueryResultCachedGif(id=fileId, document_file_id=fileId, title=meme_data[fileId].name))
+            photos.append(InlineQueryResultCachedGif(id=fileId, gif_file_id=fileId))#, title=meme_data[fileId].name))
 
         #print("file with id {} is ".format(fileId))
         #pprint.pprint(file)
