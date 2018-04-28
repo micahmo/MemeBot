@@ -212,7 +212,7 @@ def handleChat(msg):
             else:
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
-            print("gif file id is: {}".format(msg['document'][-1]['file_id']))
+            print("gif file id is: {}".format(msg['document']['file_id']))
         
         else:
             if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
