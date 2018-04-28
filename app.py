@@ -78,7 +78,13 @@ def handleChat(msg):
         if content_type == 'text':
             # a couple of special commands for me
             if chat_id == MICAHMO_ID and msg.get("text").lower() == "/sudolist":
-                BOT.sendMessage(chat_id, pprint.pformat(meme_data, indent=4))
+                sudo_list = pprint.pformat(meme_data, indent=4)
+
+                chunks, chunk_size = len(sudo_list), len(sudo_list)//4096
+                list_of_messages = sudo_list[i : i + chunk_size] for i in range(0, chunks, chunk_size)
+
+                for message in list_of_messages:
+                    BOT.sendMessage(chat_id, message)
 
             elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/sudodelete"):
                 memeToDeleteFileId = msg.get("text").split(' ')[1]
@@ -220,7 +226,7 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
             
             else:
-                BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
+                BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Feel free to contact the developer @micahmo to add support for this format.".format(msg.get("document").get("mime_type")))
 
             # print("gif file id is: {}".format(msg['document']['file_id']))
         
@@ -274,14 +280,14 @@ def handleInline(msg):
         # first, get the file so we know what type it is
         file = BOT.getFile(fileId)
 
-        print("file with id {} is ".format(fileId))
-        pprint.pprint(file)
+        #print("file with id {} is ".format(fileId))
+        #pprint.pprint(file)
 
         if ("photo" in file.get("file_path")):
             # it's a photo
             photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
         elif ("animation" in file.get("file_path")):
-            # it's a gif
+            # it's an mp4 gif
             photos.append(InlineQueryResultCachedMpeg4Gif(id=fileId, mpeg4_file_id=fileId))
 
     # respond with our results
