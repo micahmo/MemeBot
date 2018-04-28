@@ -213,7 +213,7 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it? Be as descriptive as possible!")
 
                     # save the meme under the user's id
-                    meme_data[chat_id] = Meme("", msg['document']['file_id']), chat_id, msg.get("chat").get("username"))
+                    meme_data[chat_id] = Meme("", msg['document']['file_id'], chat_id, msg.get("chat").get("username"))
 
                     message_status[chat_id] = MessageStatus.WaitingForMemeName
                 else:
