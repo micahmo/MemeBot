@@ -405,8 +405,8 @@ class Meme:
         self.submitterUsername = submitterUsername
 
     def __str__(self):
-        return "name: {}, type: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
+        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
 
     def __repr__(self):
-        return "name: {}, type: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
+        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
  
