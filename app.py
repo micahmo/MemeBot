@@ -274,10 +274,10 @@ def handleInline(msg):
         # first, get the file so we know what type it is
         file = BOT.getFile(fileId)
 
-        if (file.get("file_path").contains("photo")):
+        if ("photo" in file.get("file_path")):
             # it's a photo
             photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
-        elif (file.get("file_path").contains("animation")):
+        elif ("animation" in file.get("file_path")):
             # it's a gif
             pass
 
