@@ -114,40 +114,42 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
 
             elif msg.get("text").lower().startswith("/deletememe"):
-                
-                # put the user in "deleting meme" mode
-                message_status[chat_id] = MessageStatus.WaitingToDeleteMeme
-
                 # send the user a list of their memes as a "custom keyboard"
                 custom_keyboard = []
 
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id):
                         custom_keyboard.append([
-                            KeyboardButton(text=value.name)
+                            KeyboardButton(text=value.name.replace('_', ' '))
                         ])
                 
                 keyboard = ReplyKeyboardMarkup(keyboard=custom_keyboard)
-                BOT.sendMessage(chat_id, "Pick one of your memes to delete:", reply_markup=keyboard)
+                BOT.sendMessage(chat_id, "Tell me which meme you want to delete...", reply_markup=keyboard)
 
+                # put the user in "deleting meme" mode
+                message_status[chat_id] = MessageStatus.WaitingToDeleteMeme
+            
+            elif message_status.get(chat_id) == MessageStatus.WaitingToDeleteMeme:
+                memeDeleted = False
+                try:
+                    memeToDeleteName =  msg.get("text").replace(' ', '_')
+                    for key, value in meme_data.items():
+                        if (value.submitter == chat_id and value.name == memeToDeleteName):
+                            meme_data.pop(key, None)
+                            memeDeleted = True
+                            break
+                except:
+                    pass
+                finally:
+                    if memeDeleted:
+                        # tell the user we deleted their meme
+                        BOT.sendMessage(chat_id, "Deleted!")
+                    else:
+                        # tell the user we couldn't find their meme
+                        BOT.sendMessage(chat_id, "Meme name not found.")
 
-                # memeDeleted = False
-                # try:
-                #     memeToDeleteName =  (' '.join(msg.get("text").lower().split(' ')[1:])).replace(' ', '_')
-                #     for key, value in meme_data.items():
-                #         print("name: {}, nameToDelete: {}".format(value.name, memeToDeleteName))
-                #         if (value.submitter == chat_id and value.name == memeToDeleteName):
-                #             meme_data.pop(key, None)
-                #             memeDeleted = True
-                #             break
-                # except:
-                #     pass
-                # finally:
-                #     if memeDeleted:
-                #         BOT.sendMessage(chat_id, "Deleted!")
-                #     else:
-                #         BOT.sendMessage(chat_id, "Meme not found. Try sending /listmymemes to see a list of your memes that you can delete.")
-                    
+                # put the user in back in "unknown" mode
+                message_status[chat_id] = MessageStatus.Unknown
             
             elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
                 BOT.sendMessage(chat_id, "Hmm, I didn't get a picture. Try again!")
