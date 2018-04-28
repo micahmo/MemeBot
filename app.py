@@ -179,7 +179,7 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
 
         elif content_type == 'document':
-            BOT.sendMessage(chat_id, "At this time, the file format that you send ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
+            BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
         
         else:
             BOT.sendMessage(chat_id, "wat")
