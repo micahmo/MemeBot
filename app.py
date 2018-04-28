@@ -2,7 +2,7 @@ import os
 import os.path
 from flask import Flask, request
 import telepot
-from telepot.namedtuple import InlineQueryResultCachedPhoto
+from telepot.namedtuple import InlineQueryResultCachedPhoto, InlineKeyboardButton, InlineKeyboardMarkup
 import pprint
 import time
 from random import randint
@@ -51,6 +51,7 @@ class MessageStatus:
     Unknown = 0
     WaitingForMeme = 1
     WaitingForMemeName = 2
+    WaitingToDeleteMeme = 3
 
 # list of files "enum"
 class Files:
@@ -113,22 +114,36 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, "Looks like you don't have any memes yet! Feel free to add one with /addmeme.")
 
             elif msg.get("text").lower().startswith("/deletememe"):
-                memeDeleted = False
-                try:
-                    memeToDeleteName =  (' '.join(msg.get("text").lower().split(' ')[1:])).replace(' ', '_')
-                    for key, value in meme_data.items():
-                        print("name: {}, nameToDelete: {}".format(value.name, memeToDeleteName))
-                        if (value.submitter == chat_id and value.name == memeToDeleteName):
-                            meme_data.pop(key, None)
-                            memeDeleted = True
-                            break
-                except:
-                    pass
-                finally:
-                    if memeDeleted:
-                        BOT.sendMessage(chat_id, "Deleted!")
-                    else:
-                        BOT.sendMessage(chat_id, "Meme not found. Try sending /listmymemes to see a list of your memes that you can delete.")
+                
+                # send the user a list of their memes as an "inline keyboard"
+                inline_responses = []
+
+                for key, value in meme_data.items():
+                    if (value.submitter == chat_id):
+                        inline_responses.append([
+                            InlineKeyboardButton(text=value.name)
+                        ])
+                
+                keyboard = InlineKeyboardMarkup(inline_keyboard=inline_responses )
+                bot.sendMessage(chat_id, "Pick one of your memes to delete:", reply_markup=keyboard)
+
+
+                # memeDeleted = False
+                # try:
+                #     memeToDeleteName =  (' '.join(msg.get("text").lower().split(' ')[1:])).replace(' ', '_')
+                #     for key, value in meme_data.items():
+                #         print("name: {}, nameToDelete: {}".format(value.name, memeToDeleteName))
+                #         if (value.submitter == chat_id and value.name == memeToDeleteName):
+                #             meme_data.pop(key, None)
+                #             memeDeleted = True
+                #             break
+                # except:
+                #     pass
+                # finally:
+                #     if memeDeleted:
+                #         BOT.sendMessage(chat_id, "Deleted!")
+                #     else:
+                #         BOT.sendMessage(chat_id, "Meme not found. Try sending /listmymemes to see a list of your memes that you can delete.")
                     
             
             elif message_status.get(chat_id) == MessageStatus.WaitingForMeme: # we're waiting for a meme, but they didn't send a picture
