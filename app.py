@@ -2,7 +2,7 @@ import os
 import os.path
 from flask import Flask, request
 import telepot
-from telepot.namedtuple import InlineQueryResultCachedPhoto, KeyboardButton, ReplyKeyboardMarkup
+from telepot.namedtuple import InlineQueryResultCachedPhoto, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 import pprint
 import time
 from random import randint
@@ -143,10 +143,10 @@ def handleChat(msg):
                 finally:
                     if memeDeleted:
                         # tell the user we deleted their meme
-                        BOT.sendMessage(chat_id, "Deleted!", reply_markup=None)
+                        BOT.sendMessage(chat_id, "Deleted!", reply_markup=ReplyKeyboardRemove())
                     else:
                         # tell the user we couldn't find their meme
-                        BOT.sendMessage(chat_id, "Meme name not found.", reply_markup=None)
+                        BOT.sendMessage(chat_id, "Meme name not found.", reply_markup=ReplyKeyboardRemove())
 
                 # put the user in back in "unknown" mode
                 message_status[chat_id] = MessageStatus.Unknown
