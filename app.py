@@ -272,7 +272,7 @@ def handleInline(msg):
     # now we have a sorted list of tuples, so grab our fileIds and construct our actual results lists
     for (fileId, relevancy) in fileIdsToSortedRelevancy:
         # first, get the file so we know what type it is
-        file = BOT.getFile(fielId)
+        file = BOT.getFile(fileId)
 
         pprint.pprint("file is " + file)
 
