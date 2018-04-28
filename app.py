@@ -207,12 +207,22 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
 
         elif content_type == 'document':
-            if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
-                BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
-            else:
-                BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
+            if msg.get("document").get("mime_type") == "video/mp4":
 
-            print("gif file id is: {}".format(msg['document']['file_id']))
+                if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
+                    BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it? Be as descriptive as possible!")
+
+                    # save the meme under the user's id
+                    meme_data[chat_id] = Meme("", msg['document']['file_id']), chat_id, msg.get("chat").get("username"))
+
+                    message_status[chat_id] = MessageStatus.WaitingForMemeName
+                else:
+                    BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
+            
+            else:
+                BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
+
+            # print("gif file id is: {}".format(msg['document']['file_id']))
         
         else:
             if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
