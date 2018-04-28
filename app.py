@@ -96,11 +96,11 @@ def handleChat(msg):
                 message_status[chat_id] = MessageStatus.WaitingForMeme
 
             elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) != MessageStatus.Unknown:
-                BOT.sendMessage(chat_id, "Alright, consider it cancelled!")
+                BOT.sendMessage(chat_id, "Alright, consider it cancelled!", reply_markup=ReplyKeyboardRemove())
                 message_status[chat_id] = MessageStatus.Unknown
 
             elif msg.get("text").lower().startswith("/cancel") and message_status.get(chat_id) == MessageStatus.Unknown:
-                BOT.sendMessage(chat_id, "Well, there's nothing to cancel, but ok. :)")
+                BOT.sendMessage(chat_id, "Well, there's nothing to cancel, but ok. :)", reply_markup=ReplyKeyboardRemove())
 
             elif msg.get("text").lower().startswith("/listmymemes"):
                 result = ""
