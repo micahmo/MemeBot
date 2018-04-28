@@ -115,6 +115,9 @@ def handleChat(msg):
 
             elif msg.get("text").lower().startswith("/deletememe"):
                 
+                # put the user in "deleting meme" mode
+                message_status[chat_id] = MessageStatus.WaitingToDeleteMeme
+
                 # send the user a list of their memes as an "inline keyboard"
                 inline_responses = []
 
@@ -125,7 +128,7 @@ def handleChat(msg):
                         ])
                 
                 keyboard = InlineKeyboardMarkup(inline_keyboard=inline_responses )
-                bot.sendMessage(chat_id, "Pick one of your memes to delete:", reply_markup=keyboard)
+                BOT.sendMessage(chat_id, "Pick one of your memes to delete:", reply_markup=keyboard)
 
 
                 # memeDeleted = False
