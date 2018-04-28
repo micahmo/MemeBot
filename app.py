@@ -123,7 +123,7 @@ def handleChat(msg):
 
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id):
-                        inline_responses.append([
+                        custom_keyboard.append([
                             KeyboardButton(text=value.name)
                         ])
                 
