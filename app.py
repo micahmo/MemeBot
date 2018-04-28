@@ -274,15 +274,15 @@ def handleInline(msg):
         # first, get the file so we know what type it is
         file = BOT.getFile(fileId)
 
+        print("file with id {} is ".format(fileId))
+        pprint.pprint(file)
+
         if ("photo" in file.get("file_path")):
             # it's a photo
             photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
         elif ("animation" in file.get("file_path")):
             # it's a gif
             photos.append(InlineQueryResultCachedVideo(id=fileId, video_file_id=fileId, title=meme_data[fileId].name))#, title=meme_data[fileId].name))
-
-        #print("file with id {} is ".format(fileId))
-        #pprint.pprint(file)
 
     # respond with our results
     res = BOT.answerInlineQuery(query_id, photos, cache_time=0)
