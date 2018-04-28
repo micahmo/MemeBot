@@ -273,7 +273,7 @@ def handleInline(msg):
     
     # now we have a sorted list of tuples, so grab our fileIds and construct our actual results lists
     for (fileId, relevancy) in fileIdsToSortedRelevancy:
-        if (meme_data[fileId].type == PHOTO_TYPE):
+        if (meme_data[fileId].fileType == PHOTO_TYPE):
             photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
 
     # respond with our results
@@ -390,9 +390,9 @@ if (__name__ == "__main__"):
 
 
 class Meme:
-    def __init__(self, name, type, fileId, submitter, submitterUsername):
+    def __init__(self, name, fileType, fileId, submitter, submitterUsername):
         self.name = name
-        self.type = type
+        self.fileType = type
         self.fileId = fileId
         self.submitter = submitter
         self.submitterUsername = submitterUsername
