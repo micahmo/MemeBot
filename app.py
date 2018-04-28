@@ -274,7 +274,8 @@ def handleInline(msg):
         # first, get the file so we know what type it is
         file = BOT.getFile(fileId)
 
-        pprint.pprint("file is " + file)
+        print("file with id {} is ".format(fileId))
+        pprint.pprint(file)
 
         photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
 
