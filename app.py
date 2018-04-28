@@ -203,6 +203,9 @@ def handleChat(msg):
             elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't sent a picture...
                 BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
 
+            else:
+                BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
+
         elif content_type == 'document':
             if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
                 BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
