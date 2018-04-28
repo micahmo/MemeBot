@@ -2,7 +2,7 @@ import os
 import os.path
 from flask import Flask, request
 import telepot
-from telepot.namedtuple import InlineQueryResultCachedPhoto, InlineKeyboardButton, InlineKeyboardMarkup
+from telepot.namedtuple import InlineQueryResultCachedPhoto, KeyboardButton, ReplyKeyboardMarkup
 import pprint
 import time
 from random import randint
@@ -118,16 +118,16 @@ def handleChat(msg):
                 # put the user in "deleting meme" mode
                 message_status[chat_id] = MessageStatus.WaitingToDeleteMeme
 
-                # send the user a list of their memes as an "inline keyboard"
-                inline_responses = []
+                # send the user a list of their memes as a "custom keyboard"
+                custom_keyboard = []
 
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id):
                         inline_responses.append([
-                            InlineKeyboardButton(text=value.name, callback_data=value.name)
+                            KeyboardButton(text=value.name)
                         ])
                 
-                keyboard = InlineKeyboardMarkup(inline_keyboard=inline_responses )
+                keyboard = ReplyKeyboardMarkup(keyboard=custom_keyboard)
                 BOT.sendMessage(chat_id, "Pick one of your memes to delete:", reply_markup=keyboard)
 
 
