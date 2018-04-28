@@ -179,10 +179,17 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
 
         elif content_type == 'document':
-            BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
+            if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
+                BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
+            else:
+                BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
         
         else:
-            BOT.sendMessage(chat_id, "You sent an unrecognized message type ({}). Please try again.".format(content_type))
+            if message_status.get(chat_id) == MessageStatus.WaitingForMeme:
+                BOT.sendMessage(chat_id, "You sent an unrecognized message type ({}). Please try again.".format(content_type))
+            else:
+                BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
+            
 
         # save our important objects
         save(Files.MessageStatus, message_status)
