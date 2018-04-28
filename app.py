@@ -45,6 +45,8 @@ def pass_update():
 #some "consts"
 MESSAGE_STATUS_FILENAME = 'message_status.pickle'
 MEME_DATA_FILENAME = 'meme_data.pickle'
+PHOTO_TYPE = "photo"
+GIF_TYPE = "gif"
 
 # message status "enum"
 class MessageStatus:
@@ -196,7 +198,7 @@ def handleChat(msg):
                 BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it? Be as descriptive as possible!")
 
                 # save the meme under the user's id
-                meme_data[chat_id] = Meme("", msg['photo'][-1]['file_id'], chat_id, msg.get("chat").get("username"))
+                meme_data[chat_id] = Meme("", PHOTO_TYPE, msg['photo'][-1]['file_id'], chat_id, msg.get("chat").get("username"))
 
                 message_status[chat_id] = MessageStatus.WaitingForMemeName
 
@@ -213,7 +215,7 @@ def handleChat(msg):
                     BOT.sendMessage(chat_id, "Great, I got it! Now, what do you want to call it? Be as descriptive as possible!")
 
                     # save the meme under the user's id
-                    meme_data[chat_id] = Meme("", msg['document']['file_id'], chat_id, msg.get("chat").get("username"))
+                    meme_data[chat_id] = Meme("", GIF_TYPE, msg['document']['file_id'], chat_id, msg.get("chat").get("username"))
 
                     message_status[chat_id] = MessageStatus.WaitingForMemeName
                 else:
@@ -271,7 +273,8 @@ def handleInline(msg):
     
     # now we have a sorted list of tuples, so grab our fileIds and construct our actual results lists
     for (fileId, relevancy) in fileIdsToSortedRelevancy:
-        photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
+        if (meme_data[fileId].type == PHOTO_TYPE):
+            photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
 
     # respond with our results
     res = BOT.answerInlineQuery(query_id, photos, cache_time=0)
@@ -387,15 +390,16 @@ if (__name__ == "__main__"):
 
 
 class Meme:
-    def __init__(self, name, fileId, submitter, submitterUsername):
+    def __init__(self, name, type, fileId, submitter, submitterUsername):
         self.name = name
+        self.type = type
         self.fileId = fileId
         self.submitter = submitter
         self.submitterUsername = submitterUsername
 
     def __str__(self):
-        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
+        return "name: {}, type: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.type, self.fileId, self.submitter, self.submitterUsername)
 
     def __repr__(self):
-        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
+        return "name: {}, type: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.type, self.fileId, self.submitter, self.submitterUsername)
  
