@@ -78,17 +78,8 @@ def handleChat(msg):
         if content_type == 'text':
             # a couple of special commands for me
             if chat_id == MICAHMO_ID and msg.get("text").lower() == "/sudolist":
-                # first print it out to the console
-                pprint.pprint(meme_data, indent=4)
-
-                # now send it to me
-                sudo_list = pprint.pformat(meme_data, indent=4)
-                
-                # have to split it up into chunks in case it is too long
-                chunks, chunk_size = len(sudo_list), len(sudo_list)//4096
-                list_of_messages = [ sudo_list[i : i + chunk_size] for i in range(0, chunks, chunk_size) ]
-
-                for message in list_of_messages:
+                for key, value in meme_data.items():
+                    message = pprint.pformat(key, indent=4) + " " + pprint.pformat(value, indent=4)
                     BOT.sendMessage(chat_id, message)
 
             elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/sudodelete"):
