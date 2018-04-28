@@ -86,7 +86,7 @@ def handleChat(msg):
                 
                 # have to split it up into chunks in case it is too long
                 chunks, chunk_size = len(sudo_list), len(sudo_list)//4096
-                list_of_messages = sudo_list[i : i + chunk_size] for i in range(0, chunks, chunk_size)
+                list_of_messages = [ sudo_list[i : i + chunk_size] for i in range(0, chunks, chunk_size) ]
 
                 for message in list_of_messages:
                     BOT.sendMessage(chat_id, message)
