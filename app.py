@@ -182,7 +182,7 @@ def handleChat(msg):
             BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Please send a photo.".format(msg.get("document").get("mime_type")))
         
         else:
-            BOT.sendMessage(chat_id, "wat")
+            BOT.sendMessage(chat_id, "You sent an unrecognized message type ({}). Please try again.".format(content_type))
 
         # save our important objects
         save(Files.MessageStatus, message_status)
