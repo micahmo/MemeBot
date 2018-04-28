@@ -124,7 +124,7 @@ def handleChat(msg):
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id):
                         inline_responses.append([
-                            InlineKeyboardButton(text=value.name)
+                            InlineKeyboardButton(text=value.name, callback_data=value.name)
                         ])
                 
                 keyboard = InlineKeyboardMarkup(inline_keyboard=inline_responses )
