@@ -279,6 +279,7 @@ def handleInline(msg):
             photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
         elif (file.get("file_path").contains("animation")):
             # it's a gif
+            pass
 
         #print("file with id {} is ".format(fileId))
         #pprint.pprint(file)
