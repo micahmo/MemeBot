@@ -110,7 +110,7 @@ def handleChat(msg):
                 result = ""
                 for key, value in meme_data.items():
                     if (value.submitter == chat_id):
-                        result += "\n" + value.name.replace("_", " ")
+                        result += "\n" + "🖼️ " + value.name.replace("_", " ")
                 
                 if (len(result) > 0):
                     BOT.sendMessage(chat_id, result)
