@@ -275,13 +275,11 @@ def handleInline(msg):
     
     # now we have a sorted list of tuples, so grab our fileIds and construct our actual results lists
     for (fileId, relevancy) in fileIdsToSortedRelevancy:
+        
         if meme_data[fileId].name != "": # check for empty name, meaning it's not saved yet and thus doesn't have a valid ID
+            
             # first, get the file so we know what type it is
             file = BOT.getFile(fileId)
-
-            print("meme_data[fileId].name is {}".format(meme_data[fileId].name))
-            print("meme_data[fileId].name != \"\" is {}".format(meme_data[fileId].name != ""))
-
         
             if ("photo" in file.get("file_path")):
                 # it's a photo
