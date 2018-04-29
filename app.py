@@ -278,15 +278,13 @@ def handleInline(msg):
         # first, get the file so we know what type it is
         file = BOT.getFile(fileId)
 
-        #print("file with id {} is ".format(fileId))
-        #pprint.pprint(file)
-
-        if ("photo" in file.get("file_path")):
-            # it's a photo
-            photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
-        elif ("animation" in file.get("file_path")):
-            # it's an mp4 gif
-            photos.append(InlineQueryResultCachedMpeg4Gif(id=fileId, mpeg4_file_id=fileId))
+        if meme_data[fileId].name != "": # check for empty name, meaning it's not saved yet and thus doesn't have a valid ID
+            if ("photo" in file.get("file_path")):
+                # it's a photo
+                photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
+            elif ("animation" in file.get("file_path")):
+                # it's an mp4 gif
+                photos.append(InlineQueryResultCachedMpeg4Gif(id=fileId, mpeg4_file_id=fileId))
 
     # respond with our results
     res = BOT.answerInlineQuery(query_id, photos, cache_time=0)
