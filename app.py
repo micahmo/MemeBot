@@ -278,6 +278,9 @@ def handleInline(msg):
         # first, get the file so we know what type it is
         file = BOT.getFile(fileId)
 
+        print("meme_data[fileId].name is {}".format(meme_data[fileId].name))
+        print("meme_data[fileId].name != \"\" is {}".format(meme_data[fileId].name != ""))
+
         if meme_data[fileId].name != "": # check for empty name, meaning it's not saved yet and thus doesn't have a valid ID
             if ("photo" in file.get("file_path")):
                 # it's a photo
