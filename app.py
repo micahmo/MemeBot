@@ -109,8 +109,8 @@ def handleChat(msg):
             elif msg.get("text").lower().startswith("/listmymemes"):
                 result = ""
                 for key, value in meme_data.items():
-                    if (value.submitter == chat_id):
-                        result += "\n\n" + "🖼️ " + value.name.replace("_", " ")
+                    if (value.submitter == chat_id and value.name != ""):
+                        result += "\n\n" + "🖼️  " + value.name.replace("_", " ")
                 
                 if (len(result) > 0):
                     BOT.sendMessage(chat_id, result)
