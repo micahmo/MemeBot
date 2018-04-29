@@ -218,11 +218,12 @@ def handleChat(msg):
                     meme_data[chat_id] = Meme("", msg['document']['file_id'], chat_id, msg.get("chat").get("username"))
 
                     message_status[chat_id] = MessageStatus.WaitingForMemeName
+                
+                elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't sent a picture...
+                    BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
+
                 else:
                     BOT.sendMessage(chat_id, "Hmm, I'm not sure what you want. :( Feel free to send me a new meme with /addmeme!")
-            
-            elif message_status.get(chat_id) == MessageStatus.WaitingForMemeName: # we're waiting for a meme name, but they didn't sent a picture...
-                BOT.sendMessage(chat_id, "Hmm, I'm still waiting for you to send me a name for the meme...")
             
             else:
                 BOT.sendMessage(chat_id, "At this time, the file format that you sent ({}) is not supported. :( Feel free to contact the developer @micahmo to add support for this format.".format(msg.get("document").get("mime_type")))
