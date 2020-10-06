@@ -1,50 +1,30 @@
 import os
 import os.path
-from flask import Flask, request
 import telepot
 from telepot.namedtuple import InlineQueryResultCachedPhoto, InlineQueryResultCachedMpeg4Gif, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telepot.loop import MessageLoop
 import pprint
 import time
-from random import randint
 import pickle
 import boto
 import boto.s3
-import sys
 from boto.s3.key import Key
 import operator
 
-MICAHMO_ID = '76034823'
+# Define our classes and methods first
 
-# set some consts that we'll need later on for the bot
-PORT = int(os.environ.get('PORT', 5000))
-TOKEN = "554574433:AAE6O2v3sm7yEQ9kJYW7GPp-JGnrUSyUMGM"
-SECRET = "/BOT" + TOKEN
-URL = "https://memebot42.herokuapp.com/"
+class Meme:
+    def __init__(self, name, fileId, submitter, submitterUsername):
+        self.name = name
+        self.fileId = fileId
+        self.submitter = submitter
+        self.submitterUsername = submitterUsername
 
-# get some environment variables that we'll need later
-S3_BUCKET = os.environ.get('S3_BUCKET')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    def __str__(self):
+        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
 
-# do some S3 setup
-os.environ['S3_USE_SIGV4'] = 'True'
-os.environ['REGION_HOST'] = 's3.us-east-2.amazonaws.com'
-
-# set up Flask
-try:
-    from Queue import Queue
-except ImportError:
-    from queue import Queue
-
-app = Flask(__name__)
-@app.route(SECRET, methods=['GET', 'POST'])
-def pass_update():
-    UPDATE_QUEUE.put(request.data)  # pass update to BOT
-    return 'OK'
-
-#some "consts"
-MESSAGE_STATUS_FILENAME = 'message_status.pickle'
-MEME_DATA_FILENAME = 'meme_data.pickle'
+    def __repr__(self):
+        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
 
 # message status "enum"
 class MessageStatus:
@@ -77,12 +57,12 @@ def handleChat(msg):
 
         if content_type == 'text':
             # a couple of special commands for me
-            if chat_id == MICAHMO_ID and msg.get("text").lower() == "/sudolist":
+            if chat_id == OWNER_CHAT_ID and msg.get("text").lower() == "/sudolist":
                 for key, value in meme_data.items():
                     message = pprint.pformat(key, indent=4) + " " + pprint.pformat(value, indent=4)
                     BOT.sendMessage(chat_id, message)
 
-            elif chat_id == MICAHMO_ID and msg.get("text").lower().startswith("/sudodelete"):
+            elif chat_id == OWNER_CHAT_ID and msg.get("text").lower().startswith("/sudodelete"):
                 memeToDeleteFileId = msg.get("text").split(' ')[1]
                 for key, value in meme_data.items():
                     if (value.fileId == memeToDeleteFileId):
@@ -240,8 +220,7 @@ def handleChat(msg):
         save(Files.MemeData, meme_data)
 
         #print our received message, for debugging purposes
-        pprint.pprint(message_status)   
-
+        pprint.pprint(message_status)
 
 def handleInline(msg):
     pprint.pprint(msg)
@@ -281,20 +260,24 @@ def handleInline(msg):
             # first, get the file so we know what type it is
             file = BOT.getFile(fileId)
         
+            # Note: For some crazy reason, file_ids longer than 64 character have to be trimmed, hence the [:64]
+            # More info: https://github.com/telegraf/telegraf/issues/869#issuecomment-615930095
+
             if ("photo" in file.get("file_path")):
                 # it's a photo
-                photos.append(InlineQueryResultCachedPhoto(id=fileId, photo_file_id=fileId))
+                photos.append(InlineQueryResultCachedPhoto(id=fileId[:64], photo_file_id=fileId))
             elif ("animation" in file.get("file_path")):
                 # it's an mp4 gif
-                photos.append(InlineQueryResultCachedMpeg4Gif(id=fileId, mpeg4_file_id=fileId))
+                photos.append(InlineQueryResultCachedMpeg4Gif(id=fileId[:64], mpeg4_file_id=fileId))
 
     # respond with our results
-    res = BOT.answerInlineQuery(query_id, photos, cache_time=0)
-
+    if (photos != []):
+        BOT.answerInlineQuery(query_id, photos, cache_time=0)
+    else:
+        print(f"No results for query {query_string} for user {from_id}.")
 
 def handleChosenInline(msg):
     pprint.pprint(msg)
-
 
 def save(file, object):
     fileName = get_filename_from_file(file)
@@ -316,16 +299,15 @@ def load(file):
 
     #first, open our configuration file
     open_file(fileName)
-
+    
     #now convert the file to an object
     object = {}
-    try :
+    try:
         with open(fileName, 'rb') as json_data:
             object = pickle.load(json_data)
- 
     except:
         object = {} # if we can't open it, leave it as an empty object
-
+    
     # now delete our local file
     os.remove(fileName)
 
@@ -339,7 +321,7 @@ def get_filename_from_file(file):
 
 def get_url_to_file(fileName):
     # get the connection
-    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=REGION_HOST)
     
     # get the bucket
     bucket = conn.get_bucket(S3_BUCKET)
@@ -354,7 +336,7 @@ def get_url_to_file(fileName):
 
 def upload_file(fileName, allowPublic=False):
     # get the connection
-    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=REGION_HOST)
     
     # get the bucket
     bucket = conn.get_bucket(S3_BUCKET)
@@ -369,7 +351,7 @@ def upload_file(fileName, allowPublic=False):
 
 def open_file(fileName):
     # get the connection
-    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=os.environ.get('REGION_HOST'))
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=REGION_HOST)
     
     # get the bucket
     bucket = conn.get_bucket(S3_BUCKET)
@@ -383,34 +365,30 @@ def open_file(fileName):
         open(fileName, 'a').close() #create an empty file if we can't find one on the server
 
 
-
-# set up bot
-BOT = telepot.Bot(TOKEN)
-UPDATE_QUEUE = Queue()
-
-BOT.message_loop({'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result': handleChosenInline}, source=UPDATE_QUEUE)
-
-if (URL + SECRET) != BOT.getWebhookInfo()['url']:
-    BOT.setWebhook() # unset if was set previously
-    BOT.setWebhook(URL + SECRET)
+# Important Note: When pickle.load is executed, if there is a class referenced in the pickled data, there are two implications:
+#   1. The referenced class (and corresponding module) must still exist! In this example, app.py:Meme must always exist to depickle meme_data.pickle.
+#   2. The referenced module (if any) we be reloaded. This means, in order to avoid double execution, __main__ must be checked, as below,
+#      otherwise all code in the module will be executed for every pickle.load.
 
 if (__name__ == "__main__"):
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    # Get our environment variables
+    TOKEN = os.environ.get('BOT_TOKEN')
+    OWNER_CHAT_ID = os.environ.get('OWNER_CHAT_ID')
+    S3_BUCKET = os.environ.get('S3_BUCKET')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    REGION_HOST = os.environ.get('REGION_HOST')
 
+    #some "consts"
+    MESSAGE_STATUS_FILENAME = 'message_status.pickle'
+    MEME_DATA_FILENAME = 'meme_data.pickle'
 
+    # set up bot
+    BOT = telepot.Bot(TOKEN)
 
+    MessageLoop(BOT, {'chat': handleChat, 'inline_query': handleInline, 'chosen_inline_result': handleChosenInline}).run_as_thread()
+    print("Bot started successfully and is listening for messages.")
 
-
-class Meme:
-    def __init__(self, name, fileId, submitter, submitterUsername):
-        self.name = name
-        self.fileId = fileId
-        self.submitter = submitter
-        self.submitterUsername = submitterUsername
-
-    def __str__(self):
-        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
-
-    def __repr__(self):
-        return "name: {}, fileId: {}, submitter: {}, submitterUsername: {}".format(self.name, self.fileId, self.submitter, self.submitterUsername)
- 
+    # Infinite sleep main thread
+    while 1:
+        time.sleep(10)
