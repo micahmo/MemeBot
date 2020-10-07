@@ -275,7 +275,7 @@ def handleInline(msg):
 
     # respond with our results
     if (photos != []):
-        print(f"Found {photos.count} results for query {query_string} for user {from_id}.")
+        print(f"Found {photos.count()} results for query '{query_string}'' for user {from_id}.")
         BOT.answerInlineQuery(query_id, photos, cache_time=0)
     else:
         print(f"No results for query {query_string} for user {from_id}.")
