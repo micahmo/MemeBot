@@ -52,8 +52,9 @@ def handleChat(msg):
         chat_id = str(chat_id) #if it's not already a string...
         
         # print the message info out, for debugging
-        print(content_type)
-        pprint.pprint(msg)
+        if (DEBUG):
+            print(content_type)
+            pprint.pprint(msg)
 
         if content_type == 'text':
             # a couple of special commands for me
@@ -220,10 +221,12 @@ def handleChat(msg):
         save(Files.MemeData, meme_data)
 
         #print our received message, for debugging purposes
-        pprint.pprint(message_status)
+        if (DEBUG):
+            pprint.pprint(message_status)
 
 def handleInline(msg):
-    pprint.pprint(msg)
+    if (DEBUG):
+        pprint.pprint(msg)
 
     # get our meme data
     meme_data = load(Files.MemeData)
@@ -272,12 +275,14 @@ def handleInline(msg):
 
     # respond with our results
     if (photos != []):
+        print(f"Found {photos.count} results for query {query_string} for user {from_id}.")
         BOT.answerInlineQuery(query_id, photos, cache_time=0)
     else:
         print(f"No results for query {query_string} for user {from_id}.")
 
 def handleChosenInline(msg):
-    pprint.pprint(msg)
+    if (DEBUG):
+        pprint.pprint(msg)
 
 def save(file, object):
     fileName = get_filename_from_file(file)
@@ -378,6 +383,7 @@ if (__name__ == "__main__"):
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     REGION_HOST = os.environ.get('REGION_HOST')
+    DEBUG = os.environ.get('DEBUG') == 'yes'
 
     #some "consts"
     MESSAGE_STATUS_FILENAME = 'message_status.pickle'
